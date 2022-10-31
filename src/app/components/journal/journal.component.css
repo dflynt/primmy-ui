@@ -1,0 +1,32 @@
+#fixedEntries {
+}
+
+#editor {
+    flex-grow: 1;
+}
+
+#figuresContainer {
+
+}
+
+td {
+    width: 15em;
+    overflow:hidden;
+    overflow-x:hidden
+}
+
+button { 
+    width: 6em;
+    height: 3em;
+    font-family: monospace;
+    background-color:  #57CC99;
+    color: white;
+    border-radius: 3px;
+    border-color: white;
+}
+
+button:hover {
+    background-color: #DDF4EA;
+    color: black;
+    border-color: black;
+}

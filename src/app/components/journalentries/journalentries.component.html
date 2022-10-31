@@ -1,0 +1,106 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div id="journalPreviewListContainer">
+    <div *ngIf="currentTopic != null">
+        <button id="createJournalBtn" class="journalCRUDBtn" (click)="showNewJournalModal()">Create</button>
+        <button class="journalCRUDBtn" (click)="showNewJournalModal()">Save</button>
+        <button class="journalCRUDBtn">Edit</button>
+        <button id="deleteJournalBtn" class="journalCRUDBtn">Delete</button>
+    </div>
+    <div class="journalPreviewContainer">
+        <div class="dropdown">
+            <button *ngIf="retrievingTopics">
+                <img src="../../../assets/images/loading.gif"/>
+            </button>
+            <button class="dropbtn" id="newTopicDropdownBtn" *ngIf="!retrievingTopics;">
+                <span *ngIf="topics.length == 0; else showTopics" (click)="showNewTopicModal()">
+                    Add Topic
+                </span>
+                <ng-template #showTopics>
+                    <div>
+                        <span style="margin-left: 0em;">{{currentTopic.topicName}} </span>
+                        <i class="fa fa-caret-down"></i>
+                    </div>
+                </ng-template>
+            </button>
+            <div class="dropdown-content" >
+                <p class="topic" *ngIf="topics.length != 0" (click)="showNewTopicModal()">Add new topic</p>
+                <p class="topic" (click)="changeTopics(k);" *ngFor="let topic of topics; let k = index">
+                    {{topic.topicName}}
+                </p>
+            </div>
+        </div>
+        <br> 
+        <br> 
+        <br>
+        <br>
+        <br>
+        <div id="loadingContainer"  style="margin-left: auto; margin-right: auto;" *ngIf="retrievingPreviews; else displayJournalPreviews;">
+            <img  src="../../../assets/images/loading.gif"/>
+        </div>
+        <ng-template #displayJournalPreviews>
+            <div class="journalPreview" *ngFor="let entry of journalPreviews; let i = index"
+                [ngClass]="{'active': currentJournalPreviewIndex === i}"
+                (click)="setSelectedPreviewIndex(i)">
+                <p><span class="preview-title">{{entry.title}}</span> - {{entry.createdDate | date : "shortDate"}}</p>
+                <p class="preview-subTitle">{{entry.subTitle}}</p>
+            </div> 
+        </ng-template>
+        
+    </div>
+
+    <p-dialog class = "modalPopup" header="Add New Topic" [(visible)]="displayNewTopicModal" [modal]="true" [style]="{width: '20vw', 'font-family': 'monospace'}"
+    [draggable]="false" [resizable]="false">
+        <p class="m-0 modalPopup" style="text-align:center;">
+            <label for="topicName">Topic Name</label>
+            <br>
+            <input id="topicName" type="text"  [(ngModel)]="newTopicName" placeholder="Required">
+            <br>
+            <br>
+            <label for="topicName">Color</label>
+            <br>
+            <input id="topicName" type="text"  [(ngModel)]="newTopicColor" placeholder="Optional">
+            <br>
+            <br>
+            <b>OR</b>
+            <br>
+            <br>
+            <label for="classCode">Have a class code?</label>
+            <br>
+            <input id="classCode" type="text"  [(ngModel)]="newTopicClassId" placeholder="Optional">
+            <br>
+            <br>
+            <br>
+            <img *ngIf="displayNewTopicModalLoadingIcon" src="../../../assets/images/loading.gif"/>  
+        </p>
+        <ng-template pTemplate="footer">
+            <button id="modalCloseBtn" class = "modalPopup" (click)="createNewTopic()">Create</button>
+            <button id="modalCloseBtn" class = "modalPopup" (click)="closeNewTopicModal()">Exit</button>
+        </ng-template>
+    </p-dialog>
+
+    <p-dialog class = "modalPopup" header="Add New Journal" [(visible)]="displayNewJournalModal" [modal]="true" [style]="{width: '20vw', 'font-family': 'monospace'}"
+        [draggable]="false" [resizable]="false">
+        <p class="m-0 modalPopup" style="text-align:center;">
+            <label for="journalTitle">Journal title</label>
+            <br>
+            <input id="journalTitle" type="text"  [(ngModel)]="newJournalTitle" placeholder="Required">
+            <br>
+            <br>
+            <label for="journalSubTitle">Journal Sub-title</label>
+            <br>
+            <input id="journalSubTitle" type="text"  [(ngModel)]="newJournalSubTitle" placeholder="Optional">
+            <br>
+            <br>
+            <label for="journalTags">Journal Search Tags</label>
+            <br>
+            <input id="journalTags" type="text"  [(ngModel)]="newJournalSearchTags" placeholder="Optional (comma separated)">
+            
+        </p>
+        <ng-template pTemplate="footer">
+            <button id="modalCloseBtn" class = "modalPopup" (click)="createNewJournal()">Create</button>
+            <button id="modalCloseBtn" class = "modalPopup" (click)="closeNewJournalModal()">Exit</button>
+        </ng-template>
+    </p-dialog>
+</div>
+

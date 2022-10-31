@@ -1,0 +1,48 @@
+
+
+#tagLineContainer {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+#splashImage {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+}
+
+hr {
+    margin-top: 1em;
+    width: 35%;
+}
+
+.wrapper {
+  /*This part is important for centering*/
+  display: grid;
+  place-items: center;
+  padding-top: 3em;
+}
+
+.typing-demo {
+  width: 12ch;
+  animation: typing 1.2s steps(6), blink .5s step-end 3;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid transparent;
+  font-family: monospace;
+  font-size:56px;
+}
+
+@keyframes typing {
+  from {
+    width: 0
+  }
+}
+    
+@keyframes blink {
+  from, to { border-color: black }
+  50% { border-color: transparent; }
+}
+  

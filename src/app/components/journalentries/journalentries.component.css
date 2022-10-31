@@ -1,0 +1,176 @@
+#journalPreviewListContainer {
+    width: 15em;
+    white-space: nowrap; 
+    text-overflow: ellipsis;
+    border-color: grey; 
+    border-width: 2px;
+}
+.dropdown {
+    float: left;
+    overflow: hidden;
+    font-family: monospace;
+    margin-left: 2px;
+  }
+
+  /*
+  Remove this id if it causes errors when topics array is not null
+  */
+  #newTopicDropdownBtn {
+    cursor: pointer;
+  }
+  
+  
+  .dropdown .dropbtn {
+    width:8em;
+    font-size: 28px;  
+    outline: none;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: monospace;
+    text-align: center;
+    border-width: 2px;
+    border-radius: 3px;
+  }
+
+.topic:hover, .dropdown:hover .dropbtn {
+    background-color: #57CC99;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    width: 17em;
+    box-shadow: 0px 8px 8px 8px rgba(0,0,0,0.2);
+    z-index: 1;
+    font-family: monospace;
+  }
+  
+  .dropdown-content .topic {
+    width: 10em;
+    float: none;
+    color: black;
+    padding: 18px 2px;
+    font-size: 22px;
+    height: 3em;
+    display: block;
+    text-align: center;
+    font-family: monospace;
+    font-weight:bolder;
+    border-width: 1px;
+    border-style: solid;
+    border-color:transparent;
+    overflow-x: hidden;
+  }
+  
+  .dropdown-content .topic:hover {
+    background-color: #DDF4EA;
+    border-color: #57CC99;
+    cursor: pointer;
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  .disabled {
+    pointer-events: none;
+  }
+
+  #loadingContainer {
+    height: 100%;
+    margin: auto;
+  }
+
+  #loadingContainer img {
+    margin-top: 30em;
+    margin-left: 7em;
+  }
+
+.journalPreviewContainer {
+    height: 85em;
+    border-style: solid;
+    border-color: grey; 
+    border-width: 1px;
+    font-family: monospace;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.journalPreview {
+    margin: 5px;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    border-radius: 2px;
+}
+.journalPreview:hover {
+    background-color: #DDF4EA;
+    cursor: pointer;
+}
+
+.journalPreview.active {
+    outline: 2px solid #57CC99;
+    border-radius: 1px;
+    background-color: #DDF4EA;
+    align-items: left;
+    font-family: monospace;
+}
+
+.preview-subTitle {
+    font-style:italic;
+}
+
+.preview-title {
+    font-size: 16px;
+    font-weight:bold;
+    margin-left: 10px;
+}
+
+#createJournalBtn {
+  bottom: 0px; 
+}
+
+#deleteJournalBtn {
+  bottom: 0px;
+}
+
+.journalCRUDBtn {
+  width: 58px;
+  height: 3em;
+  font-family: monospace;
+  background-color:  #57CC99;
+  color: white;
+  border-radius: 3px;
+  border-color: white;
+  margin-right: 2px;
+  text-align:center;
+}
+
+.journalCRUDBtn:hover {
+  border-color: black;
+}
+
+/*
+SCROLL OVERFLOW CSS
+*/
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 3px black; 
+    border-radius: 3px;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #C4C4C4; 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #bebebe; 
+  }

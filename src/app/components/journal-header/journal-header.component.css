@@ -1,0 +1,33 @@
+#journalHeaderContainer {
+    font-family: monospace;
+    background-color: #57CC99;
+    overflow: hidden;
+    max-width: 100vw;
+}
+
+#imageLink {
+    margin-top: 1em;
+    float: left;
+    margin-left: 2em;
+    font-size: 32px;
+}
+
+#profileContainer {
+    float: right;
+    display:inline-flex;
+    margin-right: 2em;
+}
+.icon{
+    float: right;
+    margin-top: 1em;
+    margin-right: 1.5em;
+    transform: scale(3);
+}
+
+.icon:hover {
+    transform: scale(3.2);
+}
+
+#profileLabel {
+    margin-top: 1em;
+}

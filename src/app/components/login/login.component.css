@@ -1,0 +1,41 @@
+#loginFormContainer {
+    margin-left:auto;
+    margin-right: auto;
+    display: flex;
+    justify-content:center; 
+    align-items:center;
+    height: 70%;
+    text-align:center;
+    font-family: monospace;
+}
+
+#loginHeader {
+    font-family: monospace;
+    font-size: 36px;
+}
+.form-input {
+    margin-top: 3.5em;
+}
+
+form {
+    border-radius: 5px;
+    padding: 4em;
+}
+
+button { 
+    width: 8em;
+    height: 2em;
+    font-family: monospace;
+    background-color:  #57CC99;
+    color: white;
+    border-radius: 3px;
+    border-color: white;
+}
+
+.form-submit {   
+    height: 3em;
+}
+
+#incorrectCredentialsMsg {
+    color: white;
+}

@@ -1,0 +1,42 @@
+#signUpFormContainer {
+    margin-left:auto;
+    margin-right: auto;
+    display: flex;
+    justify-content:center; 
+    align-items:center;
+    height: 100%;
+    text-align:center;
+    font-family: monospace;
+}
+
+#signUpHeader {
+    font-family: monospace;
+    font-size: 36px;
+}
+.form-input {
+    margin-top: 3.5em;
+}
+
+form {
+    border-radius: 5px;
+    padding: 4em;
+}
+
+button {
+    width: 8em;
+    height: 2em;
+    font-family: monospace;
+    background-color:  #57CC99;
+    color: white;
+    border-radius: 3px;
+    border-color: white;
+}
+
+button:hover {
+    border-color: black;
+} 
+
+.modalPopup {
+    font-family: monospace;
+
+}

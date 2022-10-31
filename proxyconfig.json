@@ -1,0 +1,24 @@
+{
+    "/journal": {
+        "target": "http://localhost:9999",
+        "secure": false,
+        "changeOrigin": "*",
+        "logLevel": "debug" 
+    },
+
+    "/topics": {
+        "target": "http://localhost:9999",
+        "secure": false,
+        "changeOrigin": "*",
+        "logLevel": "debug" 
+    },
+
+    "/login": {
+        "target": "http://localhost:7777",
+        "secure": false,
+        "changeOrigin": "*",
+        "logLevel": "debug"    
+
+    }
+
+}

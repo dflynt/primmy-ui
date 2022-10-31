@@ -1,0 +1,167 @@
+
+.slider {
+  overflow-x: auto;
+  border-color: lightgray; 
+  border-width: 2px;
+  border-style: solid;
+}
+
+#figuresContainer {
+  margin-top: -1em; 
+  height: 86vh; 
+  width: 180px; 
+  overflow-y: auto; 
+  overflow-x: hidden;
+}
+
+.figure {
+  width: 173px;
+  border-width: 1px;
+  border-radius: 2px;
+  margin-left: 3px;
+  padding-top: 2em;
+  color: grey;
+  font-family: monospace;
+  border-color: lightgray;
+  border-style:solid;
+  text-align:center;
+  overflow-x: hidden;
+}
+
+.figure:hover {
+  background-color: #DDF4EA;
+}
+
+.figure:active {
+  outline: 2px solid #57CC99;
+  border-radius: 1px;
+  background-color: #DDF4EA;
+}
+
+#uploadFigureBtn {
+  width: 185px;
+  height: 3em;
+  font-family: monospace;
+  background-color:  #57CC99;
+  color: white;
+  border-radius: 3px;
+  border-color: white;
+}
+
+#uploadFigureBtn:hover {
+  border-color: black;
+}
+
+.enabledUploadFigurebutton {
+  width: 185px;
+  height: 3em;
+  font-family: monospace;
+  background-color:  #57CC99;
+  color: white;
+  border-radius: 3px;
+  border-color: white;
+}
+
+.disabledUploadFigureButton {
+  width: 185px;
+  height: 3em;
+  font-family: monospace;
+  background-color: #DDF4EA;
+  font-weight: bold;
+  color: black;
+  border-radius: 3px;
+  border-color: white;
+}
+
+#noJournalSelectedBtn {
+  text-align:center;
+  font-family:monospace;
+}
+
+.figureViewerBtn {
+  width: 100px;
+  height: 3em;
+  font-family: monospace;
+  background-color:  #57CC99;
+  color: white;
+  border-radius: 3px;
+  border-color: white;
+}
+
+.icon {
+  transform: scale(2.5);
+}
+
+#imageFigure {
+  margin: auto;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 800px;
+  max-height: 1000px;
+  border-style:solid;
+  border-width: 3px;
+  border-color: black;
+  border-radius: 3px;
+}
+
+.figureContainer {
+  margin: 0 auto;
+  overflow: hidden;        
+  text-align: center;   /* clip the excess when child gets bigger than parent */
+}
+
+#imageFigureContainer img {
+  display: block;
+  transition: transform .4s;   /* smoother zoom */
+  object-fit: contain;
+}
+
+#textFigure {
+  margin: auto;
+  display: block;
+}
+
+#pdfFigure {
+  margin: auto;
+  align-items: center;
+  display: block;
+  width: 100%;
+}
+
+:host ::ng-deep #pdfViewer .page .canvasWrapper {
+  border: 3px solid #ccc;
+  border-radius: 3px;
+}
+
+.zoomButtonContainer {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.pdfSizeChangeBtn {
+  padding-right: 1em;
+}
+/*
+SCROLL OVERFLOW CSS
+*/
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 3px black; 
+  border-radius: 3px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #C4C4C4; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #bebebe; 
+}

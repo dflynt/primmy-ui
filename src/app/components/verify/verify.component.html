@@ -1,0 +1,13 @@
+<div id="verifyContainer">
+    <div *ngIf="displayLoading; else elseBlock">
+        <h1>Verifying your account...</h1>
+        <br>
+        <img src="../../../assets/images/loading.gif"/>
+    </div>
+
+    <ng-template #elseBlock>
+        <p>Uh oh! Something went wrong on our end...<br>Do you want to notify the Primmy team so we can try to get this resolved?</p>
+        <button (click)="submitBugReport()">Yes</button>
+        <button (click)="redirectToHomePage()">No</button>
+    </ng-template>
+</div>

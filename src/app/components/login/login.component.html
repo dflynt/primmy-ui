@@ -1,0 +1,34 @@
+<div id="loginFormContainer">
+    <form [formGroup] = "loginForm" (ngSubmit)="onSubmit()">
+
+        <p id="loginHeader">Log In</p>
+        <div class="form-input">
+            <span>
+                <label for="emailInput" class="inputLabel">Email</label>
+                <br>
+                <input id="emailInput" type="text" formControlName="email"> 
+            </span>
+        </div>
+        <div class="form-input">
+            <span>
+                <label for="passwordInput" class="inputLabel">Password</label>
+                <br>
+                <input id="passwordInput" type="password" formControlName="password"> 
+            </span>
+        </div>
+        <div class="form-item">
+            <h5 [style.color]="errormessagetextcolor">Incorrect email/password combination. Try again.</h5>
+        </div>
+        <div class="form-submit" *ngIf="!loginLoading">
+            <button id="loginBtn" type="submit">Log In</button>
+        </div>
+        <div class="form-submit" *ngIf="loginLoading">
+            <img src="../../../assets/images/loading.gif" />
+        </div>
+        <br>
+        <br>
+        <div class="form-item">
+            <a routerLink="/signup">Don't have an account?</a>
+        </div>
+    </form>
+</div>

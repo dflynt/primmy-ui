@@ -1,0 +1,22 @@
+<app-journal-header></app-journal-header>
+<div style="width: 100%; display:inline-flex; background-color: #DDF4EA">
+    <h2 style="font-family: monospace; margin-left: 1em;">{{journalService.getCurrentTopicName()}} 
+        <span *ngIf="journalService.getCurrentJournalTitle() != ''"> > {{journalService.getCurrentJournalTitle()}}</span>
+    </h2>
+</div>
+
+<div style="display: flex" *ngIf="!loadingIcon; else elseBlock">
+    <app-journalentries id="fixedEntries"></app-journalentries>
+    <editor id="editor"
+        [init]="{height: '100%', width: '100%'}"
+        [(ngModel)]="text"
+    ></editor>
+    <app-figures id="figuresContainer"></app-figures>
+</div>
+
+<ng-template #elseBlock>
+    <div style="margin-left: 50%; margin-top: 10%;">
+        <img style="height: 5em; width: 5em;" src="../../../assets/images/loading.gif"/>
+    </div>
+</ng-template>
+

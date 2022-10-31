@@ -1,0 +1,84 @@
+<button [ngClass]="enableUploadFigureButton ? 'enabledUploadFigurebutton' : 'disabledUploadFigureButton'" (click)="showNewFigureModal()" >Upload Figures</button>
+<div class="slider">
+    <div style="margin-top: -1em; height: 86vh; width: 170px;"*ngIf="retrievingFigures; else elseBlock">
+        <img style="margin-top: 30em; margin-left: 4em;"  src="../../../assets/images/loading.gif"/>
+    </div>
+    <ng-template #elseBlock>
+        <div id="figuresContainer">
+            <p id="noJournalSelectedBtn" *ngIf="currentJournalId.length == 0"><br>Select a journal to retrieve figures...</p>
+            <ul style="list-style: none; padding: 2px;">
+                <li *ngFor="let figure of figures; let i = index">
+                    <div class="figure"
+                        (click)="setSelectedFigureIndex(i)">
+                        <!--Icon type options are found in Figure.ts-->
+                        <mat-icon class="icon">{{figure.iconType}}</mat-icon>
+                        <p>{{figure.fileName}}.{{figure.fileType}}</p>
+                    </div>
+                </li>
+            </ul>        
+        </div>
+    </ng-template>    
+</div>
+
+<p-dialog class = "modalPopup" header="Add Figures" [(visible)]="displayNewFigureModal" [modal]="true" [style]="{width: '20vw', 'font-family': 'monospace'}"
+[draggable]="false" [resizable]="false">
+    <input type="file" class="file-input" #fileUpload accept="image/*, text/*, .doc, .docx, .pdf" (change)="onFileSelect($event)" multiple="multiple">
+
+    <h4 *ngIf="displayFailedUploadErrorMessage">Error uploading files</h4>
+    <ng-template pTemplate="footer">
+        <button id="modalCloseBtn" class = "modalPopup" (click)="attemptSave()">Upload</button>
+        <button id="modalCloseBtn" class = "modalPopup" (click)="closeNewFigureModal()">Exit</button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog class = "modalPopup" header="Figure Viewer" [(visible)]="displayFigureViewer" 
+        [modal]="true"  
+        [style]="{width: '55vw'}">
+    
+    <div>
+        <!--Document Viewer-->
+        <div class="figureContainer" *ngIf="displayTextFile && !displayLoadingFigureIcon">
+            <span id="textFigure">{{docText}}</span>
+            <br>
+            <h2>{{figures[selectedFigureIndex]?.fileName}}.{{figures[selectedFigureIndex]?.fileType}}</h2>
+        </div>
+        
+        
+        <!--Image Viewer-->
+        <div class="figureContainer" *ngIf="displayImageFile && !displayLoadingFigureIcon">
+            <img id="imageFigure" [style.width]="imageZoomText" [src]="imageURL"/>
+            <br>
+            <h2>{{figures[selectedFigureIndex]?.fileName}}.{{figures[selectedFigureIndex]?.fileType}}</h2>
+        </div>
+        
+        <!--pdf viewer-->
+        <div class="figureContainer" *ngIf="displayPDFFile && !displayLoadingFigureIcon">
+            <pdf-viewer id="pdfFigure" [src]="pdfURL"
+                [render-text]="true"
+                [original-size]="false"
+                [fit-to-page] = "true"
+                [zoom-scale]="'page-fit'"
+                [zoom]="pdfZoon"
+                style="width: 1000px; height: 500px; border-radius: 1px; border-style: solid"
+            ></pdf-viewer>    
+            <br>
+            <h2>{{figures[selectedFigureIndex]?.fileName}}.{{figures[selectedFigureIndex]?.fileType}}</h2>
+            <br>
+            <div class="zoomButtonContainer">
+                <i class="fa fa-search-plus fa-2x" style="margin-left: 0%;"(click)="increasePdfZoom()"></i>
+                <i class="fa fa-search-minus fa-2x" style="margin-left: 1em;"(click)="decreasePdfZoom()"></i>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div *ngIf="displayLoadingFigureIcon">
+        <p style="margin-left: 47%; font-family: monospace;">Deleting Figure...</p>
+        <br>
+        <img src="../../../assets/images/loading.gif" style="margin-left: 50%;"/>
+    </div>
+<ng-template pTemplate="footer">
+        <button class = "figureViewerBtn" (click)="closeFigureViewer()">Close</button>
+        <button class = "figureViewerBtn" (click)="deleteFigure()">Delete Figure</button>
+    </ng-template>
+</p-dialog>
