@@ -16,17 +16,26 @@ td {
 }
 
 button { 
-    width: 6em;
+    width: 58px;
     height: 3em;
     font-family: monospace;
     background-color:  #57CC99;
     color: white;
     border-radius: 3px;
     border-color: white;
+    margin-right: 2px;
+    text-align:center;
 }
 
 button:hover {
-    background-color: #DDF4EA;
-    color: black;
     border-color: black;
+}
+
+#breadcrumbContainer {
+    border-top: 1px;
+    border-bottom: 1px;
+    border-top-color: black;
+    border-top-style: solid;
+    border-bottom-color: black;
+    border-bottom-style: solid;
 }

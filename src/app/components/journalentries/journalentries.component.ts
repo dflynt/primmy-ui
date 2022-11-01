@@ -38,12 +38,15 @@ export class JournalentriesComponent implements OnInit {
   displayNewJournalModalLoadingIcon: boolean = false;
 
   newTopicName: string = ""
-  newTopicColor: string = "";
+  newTopicColor: string = "#57CC99"; //default primmy
   newTopicClassId: string = "";
   
   newJournalTitle: string = "";
   newJournalSubTitle: string = "";
   newJournalSearchTags: string = "";
+
+  selectedValue: string;
+  selectedCar: string;
 
   constructor(router: Router, journalService: JournalService, userService: UserService) { 
     this.journalService = journalService;
@@ -59,6 +62,14 @@ export class JournalentriesComponent implements OnInit {
         journalId: ""
       }
       this.currentJournalPreview = currPreview;
+    })
+
+    this.journalService.journalChange.subscribe((journalId: string) => {
+
+    })
+
+    this.journalService.previewchange.subscribe((preview: any[]) => {
+      this.loadRetrievedPreviews(preview);
     })
   }
 
@@ -123,7 +134,8 @@ export class JournalentriesComponent implements OnInit {
     })
     this.currentTopicIndex = 0;
     this.currentTopic = this.topics[this.currentTopicIndex];
-    this.journalService.setCurrentTopic(this.currentTopic.topicId, this.currentTopic.topicName);
+    console.log("journalEntries - loadRetrievedtopics... " + this.currentTopic.color)
+    this.journalService.setCurrentTopic(this.currentTopic.topicId, this.currentTopic.topicName, this.currentTopic.color);
     this.retrievingTopics = false;
   }
 
@@ -152,7 +164,7 @@ export class JournalentriesComponent implements OnInit {
     this.currentTopicIndex = index;
     this.retrievingPreviews = true;
     this.currentTopic = this.topics[index];
-    this.journalService.setCurrentTopic(this.currentTopic.topicId, this.currentTopic.topicName);
+    this.journalService.setCurrentTopic(this.currentTopic.topicId, this.currentTopic.topicName, this.currentTopic.color);
     let userId = this.userService.getCurrentUser()['userid'];
     let authToken = this.userService.getCurrentUser()['authToken'];
 
@@ -198,7 +210,7 @@ export class JournalentriesComponent implements OnInit {
       this.journalService.createNewtopic(newTopic, authToken).subscribe(
         result => {
           newTopic.topicId = result["topicId"];
-          this.journalService.setCurrentTopic(result["topicId"], result["topicName"]);
+          this.journalService.setCurrentTopic(result["topicId"], result["topicName"], result["color"]);
           this.topics.push(newTopic);
           this.currentTopic = newTopic;
           this.journalPreviews = [];
@@ -209,56 +221,5 @@ export class JournalentriesComponent implements OnInit {
       );
       this.closeNewTopicModal();
     }
-  }
-
-  showNewJournalModal() {
-    this.displayNewJournalModal = true;
-  }
-
-  createNewJournal() {
-    let userId = this.userService.getCurrentUser()['userid'];
-    let authToken = this.userService.getCurrentUser()['authToken'];
-    this.displayNewJournalModalLoadingIcon = true;
-    let journal: Journal = {
-      id: "",
-      journalId: "",
-      userId: userId,
-      topicId: this.journalService.getCurrentTopic(),
-      title: this.newJournalTitle,
-      subTitle: this.newJournalSubTitle,
-      entry: "",
-      figures: "",
-      createdDate: new Date(),
-      lastModified: new Date(),
-      hidden: false
-    }
-    this.journalService.createNewJournal(journal, authToken).subscribe(
-      result => {
-        this.journalService.getJournalPreviewsByUserIdAndTopicId(userId,this.journalService.getCurrentTopic(), authToken).subscribe(
-          result => {
-            this.loadRetrievedPreviews(result);
-          },
-          error => {
-            console.log("Error retrieving journal previews after creating enw journal");
-          }
-        );
-      },
-      error => {
-        console.log("Error creating journal");
-      }
-    )
-    this.newJournalTitle = "";
-    this.newJournalSubTitle = "";
-    this.newJournalSearchTags = "";
-    this.displayNewJournalModalLoadingIcon = false;
-    this.displayNewJournalModal = false;
-    
-  }
-
-  closeNewJournalModal() {
-    this.displayNewJournalModal = false;
-    this.newJournalTitle = "";
-    this.newJournalSubTitle = "";
-    this.newJournalSearchTags = "";
   }
 }

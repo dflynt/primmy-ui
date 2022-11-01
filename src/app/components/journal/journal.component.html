@@ -1,12 +1,19 @@
 <app-journal-header></app-journal-header>
-<div style="width: 100%; display:inline-flex; background-color: #DDF4EA">
+<div id="breadcrumbContainer" style="width: 100%; display:inline-flex;" *ngIf="journalService.getCurrentTopic() != null;" [style.background-color] = "journalColor">
     <h2 style="font-family: monospace; margin-left: 1em;">{{journalService.getCurrentTopicName()}} 
         <span *ngIf="journalService.getCurrentJournalTitle() != ''"> > {{journalService.getCurrentJournalTitle()}}</span>
     </h2>
+    <p style="margin-left: 2em;" *ngIf="displayJournalSavingMessage">Saving journal...</p>
 </div>
 
 <div style="display: flex" *ngIf="!loadingIcon; else elseBlock">
-    <app-journalentries id="fixedEntries"></app-journalentries>
+    <div >
+        <button id="createJournalBtn" class="journalCRUDBtn" (click)="showNewJournalModal()">Create</button>
+        <button class="journalCRUDBtn" (click)="saveJournalProgress()">Save</button>
+        <button class="journalCRUDBtn">Edit</button>
+        <button id="deleteJournalBtn" class="journalCRUDBtn">Delete</button>
+        <app-journalentries id="fixedEntries"></app-journalentries>
+    </div>
     <editor id="editor"
         [init]="{height: '100%', width: '100%'}"
         [(ngModel)]="text"
@@ -19,4 +26,28 @@
         <img style="height: 5em; width: 5em;" src="../../../assets/images/loading.gif"/>
     </div>
 </ng-template>
+
+<p-dialog class = "modalPopup" header="Add New Journal" [(visible)]="displayNewJournalModal" [modal]="true" [style]="{width: '20vw', 'font-family': 'monospace'}"
+[draggable]="false" [resizable]="false">
+<p class="m-0 modalPopup" style="text-align:center;">
+    <label for="journalTitle">Journal title</label>
+    <br>
+    <input id="journalTitle" type="text"  [(ngModel)]="newJournalTitle" placeholder="Required">
+    <br>
+    <br>
+    <label for="journalSubTitle">Journal Sub-title</label>
+    <br>
+    <input id="journalSubTitle" type="text"  [(ngModel)]="newJournalSubTitle" placeholder="Optional">
+    <br>
+    <br>
+    <label for="journalTags">Journal Search Tags</label>
+    <br>
+    <input id="journalTags" type="text"  [(ngModel)]="newJournalSearchTags" placeholder="Optional (comma separated)">
+    
+</p>
+<ng-template pTemplate="footer">
+    <button id="modalCloseBtn" class = "modalPopup" (click)="createNewJournal()">Create</button>
+    <button id="modalCloseBtn" class = "modalPopup" (click)="closeNewJournalModal()">Exit</button>
+</ng-template>
+</p-dialog>
 

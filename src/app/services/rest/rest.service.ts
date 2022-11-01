@@ -55,15 +55,15 @@ export class RestService {
     return this.httpClient.put(url, params, header);
   }
 
-  patch(route: String, port: string, params: any, authToken: string) {
+  patch(route: String, port: string, params: any, authToken: string): Observable<any>  {
     var header = {
       headers: new HttpHeaders()
         .set('Authorization',  `Bearer ` + authToken)
     }    
     let url = this.baseURL + ":" + port + route;
     console.log("Updating journal url: " + url);
-    console.log(params);
-    //return this.httpClient.patch(url, params, header);
+
+    return this.httpClient.post(url, params, header);
   }
 
   delete(route: string, port: string, params: any, authToken: string) {

@@ -21,6 +21,10 @@ export class JournalComponent implements OnInit {
   text: string;
   errorLoadingJournal: boolean = false;
   displayNewJournalModal: boolean = false;
+  displayNewJournalModalLoadingIcon: boolean = true;
+  displayJournalSavingMessage: boolean = false;
+
+  journalColor: string;
 
   loadingIcon: boolean = false;
 
@@ -34,6 +38,10 @@ export class JournalComponent implements OnInit {
     this.userService = userService;
     this.journalService.journalChange.subscribe((journalId: string) => {
       this.retrieveCurrentJournalData(journalId);      
+    })
+
+    this.journalService.topicColorchange.subscribe((topicColor: string) => {
+      this.journalColor = topicColor;
     })
    }
 
@@ -102,19 +110,76 @@ export class JournalComponent implements OnInit {
       hidden: result.hidden
     }
     this.currentJournal = journal;
+    this.text = this.currentJournal.entry;
     this.journalsForCurrentTopic.set(journal.journalId, journal);
   }
 
-  saveJournal() {
-    //Set current journal to make it available
+  showNewJournalModal() {
+    this.displayNewJournalModal = true;
+  }
+
+  createNewJournal() {
+    let userId = this.userService.getCurrentUser()['userid'];
     let authToken = this.userService.getCurrentUser()['authToken'];
+    this.displayNewJournalModalLoadingIcon = true;
+    let journal: Journal = {
+      id: "",
+      journalId: "",
+      userId: userId,
+      topicId: this.journalService.getCurrentTopic(),
+      title: this.newJournalTitle,
+      subTitle: this.newJournalSubTitle,
+      entry: "",
+      figures: "",
+      createdDate: new Date(),
+      lastModified: new Date(),
+      hidden: false
+    }
+    this.journalService.createNewJournal(journal, authToken).subscribe(
+      result => {
+        this.journalService.getJournalPreviewsByUserIdAndTopicId(userId,this.journalService.getCurrentTopic(), authToken).subscribe(
+          result => {
+            console.log(result);
+            this.journalService.displayRetrievedPreviews(result);
+            //this.loadRetrievedPreviews(result);
+          },
+          error => {
+            console.log("Error retrieving journal previews after creating enw journal");
+          }
+        );
+      },
+      error => {
+        console.log("Error creating journal");
+      }
+    )
+    this.newJournalTitle = "";
+    this.newJournalSubTitle = "";
+    this.newJournalSearchTags = "";
+    this.displayNewJournalModalLoadingIcon = false;
+    this.displayNewJournalModal = false;
+    
+  }
+  
+
+  closeNewJournalModal() {
+    this.displayNewJournalModal = false;
+    this.newJournalTitle = "";
+    this.newJournalSubTitle = "";
+    this.newJournalSearchTags = "";
+  }
+
+  saveJournalProgress() {
+    //Set current journal to make it available
+    this.displayJournalSavingMessage = true;
+    let authToken = this.userService.getCurrentUser()['authToken'];
+    this.currentJournal.entry = this.text;
     this.journalService.saveJournal(this.currentJournal, authToken).subscribe(
       result => {
-        console.log("Successfully saved new journal");
-        console.log(result);
+        this.displayJournalSavingMessage = false;
       },
       error => {
         console.log(error);
+        this.displayJournalSavingMessage = false;
       }
     );
   }

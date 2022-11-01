@@ -2,10 +2,11 @@
 
 <div id="journalPreviewListContainer">
     <div *ngIf="currentTopic != null">
-        <button id="createJournalBtn" class="journalCRUDBtn" (click)="showNewJournalModal()">Create</button>
+        <!--<button id="createJournalBtn" class="journalCRUDBtn" (click)="showNewJournalModal()">Create</button>
         <button class="journalCRUDBtn" (click)="showNewJournalModal()">Save</button>
         <button class="journalCRUDBtn">Edit</button>
         <button id="deleteJournalBtn" class="journalCRUDBtn">Delete</button>
+        -->
     </div>
     <div class="journalPreviewContainer">
         <div class="dropdown">
@@ -59,7 +60,13 @@
             <br>
             <label for="topicName">Color</label>
             <br>
-            <input id="topicName" type="text"  [(ngModel)]="newTopicColor" placeholder="Optional">
+            <select id="colorDropdown" [(ngModel)] = newTopicColor>
+                <option value="#57CC99" style="background:#57CC99; color: white">Green</option>
+                <option value="#cc578a" style="background:#cc578a; color: white;">Red</option>
+                <option value="#578acc" style="background:#578acc; color: white;">Blue</option>
+                <option value="#e7f4dd" style="background:#e7f4dd ; color: black;">White</option>
+                <option value="#9792de" style="background:#9792de; color: white;">Purple</option>
+            </select>
             <br>
             <br>
             <b>OR</b>
@@ -76,30 +83,6 @@
         <ng-template pTemplate="footer">
             <button id="modalCloseBtn" class = "modalPopup" (click)="createNewTopic()">Create</button>
             <button id="modalCloseBtn" class = "modalPopup" (click)="closeNewTopicModal()">Exit</button>
-        </ng-template>
-    </p-dialog>
-
-    <p-dialog class = "modalPopup" header="Add New Journal" [(visible)]="displayNewJournalModal" [modal]="true" [style]="{width: '20vw', 'font-family': 'monospace'}"
-        [draggable]="false" [resizable]="false">
-        <p class="m-0 modalPopup" style="text-align:center;">
-            <label for="journalTitle">Journal title</label>
-            <br>
-            <input id="journalTitle" type="text"  [(ngModel)]="newJournalTitle" placeholder="Required">
-            <br>
-            <br>
-            <label for="journalSubTitle">Journal Sub-title</label>
-            <br>
-            <input id="journalSubTitle" type="text"  [(ngModel)]="newJournalSubTitle" placeholder="Optional">
-            <br>
-            <br>
-            <label for="journalTags">Journal Search Tags</label>
-            <br>
-            <input id="journalTags" type="text"  [(ngModel)]="newJournalSearchTags" placeholder="Optional (comma separated)">
-            
-        </p>
-        <ng-template pTemplate="footer">
-            <button id="modalCloseBtn" class = "modalPopup" (click)="createNewJournal()">Create</button>
-            <button id="modalCloseBtn" class = "modalPopup" (click)="closeNewJournalModal()">Exit</button>
         </ng-template>
     </p-dialog>
 </div>

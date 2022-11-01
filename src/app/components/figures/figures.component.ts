@@ -115,6 +115,9 @@ export class FiguresComponent implements OnInit {
   setSelectedFigureIndex(index: number) {
     this.selectedFigureIndex = index;
     this.displayLoadingFigureIcon = true;
+    let documentRegex = /doc|docx|txt|text/;
+    let imageRegex = /jpg|gif|tiff|png/;
+
     console.log("Selected figure index: " + this.selectedFigureIndex);
     let figure = this.figures[index];
     if(figure.fileType.toLowerCase() == 'pdf') {
@@ -126,7 +129,7 @@ export class FiguresComponent implements OnInit {
       this.pdfURL = "data:application/pdf;base64," + f; 
     }
 
-    else if(figure.fileType.toLowerCase() == 'txt') {
+    else if(figure.fileType.toLowerCase().match(documentRegex)) {
       this.displayPDFFile = false;
       this.displayTextFile = true;
       this.displayImageFile = false;
@@ -134,13 +137,12 @@ export class FiguresComponent implements OnInit {
       this.docText = atob(f).toString();
     }
 
-    else if(figure.fileType.toLowerCase() == 'jpg') {
+    else if(figure.fileType.toLowerCase().match(imageRegex)) {
       this.displayPDFFile = false;
       this.displayTextFile = false;
       this.displayImageFile = true;
       let f: string = this.figures[index].data;
-      let text = this._sanitizer.bypassSecurityTrustResourceUrl('data:image/*;base64,' + f);
-      this.imageURL = text;
+      this.imageURL = this._sanitizer.bypassSecurityTrustResourceUrl('data:image/*;base64,' + f);
       this.imageZoom = 80;
       this.imageZoomText = "80%";
     }

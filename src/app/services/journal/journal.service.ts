@@ -15,11 +15,18 @@ export class JournalService {
   private currentJournalTitle: string;
   private currentTopicId: string;
   private currenttopicName: string;
+  private currentTopicColor: string;
   messageSource: Subject<String> = new Subject<String>();
   messagesChanges = this.messageSource.asObservable();
 
   topicSource: Subject<String> = new Subject<String>();
   topicChange = this.topicSource.asObservable();
+
+  topicColorSource: Subject<string> = new Subject<string>();
+  topicColorchange = this.topicColorSource.asObservable();
+
+  previewSource: Subject<any[]> = new Subject<any>();
+  previewchange = this.previewSource.asObservable();
 
   journalSource: Subject<string> = new Subject<string>();
   journalChange = this.journalSource.asObservable();
@@ -47,7 +54,7 @@ export class JournalService {
   }
 
   saveJournal(existingJournal: Journal, authToken: string): Observable<any> {
-    return this.rest.post("/journal/" + existingJournal.journalId, this.journalPortNumber, existingJournal, authToken);
+    return this.rest.patch("/journal/" + existingJournal.journalId, this.journalPortNumber, existingJournal, authToken);
   }
 
   getCurrentJournalId(): string {
@@ -64,6 +71,10 @@ export class JournalService {
     this.journalSource.next(journalId);
   }
 
+  displayRetrievedPreviews(previews: any[]) {
+    this.previewSource.next(previews);
+  }
+
   getCurrentTopic(): string {
     return this.currentTopicId;
   }
@@ -72,12 +83,19 @@ export class JournalService {
     return this.currenttopicName;
   }
 
-  setCurrentTopic(topicId: string, topicName: string) {
+  setCurrentTopic(topicId: string, topicName: string, topicColor: string ) {
     this.currenttopicName = topicName;
     this.currentTopicId = topicId;
+    this.currentTopicColor = topicColor;
+    console.log("Service... currentTopic: " + this.currentTopicColor);
     //if switching topics, current journal is unselected
     this.currentJournalTitle = "";
     this.topicSource.next(topicId);
+    this.topicColorSource.next(topicColor);
+  }
+
+  getCurrentTopicColor(): string {
+    return this.currentTopicColor;
   }
 
   getFigures(journalId: string, authToken: string): Observable<any> {
