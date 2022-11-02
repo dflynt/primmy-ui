@@ -55,12 +55,17 @@ export class FiguresComponent implements OnInit {
     this.userService = userService;
 
     this.journalService.journalChange.subscribe((journalId: string) => {
-      this.resetFileUpload();
-      this.figures = [];
-      this.currentJournalId = journalId;
-      this.enableUploadFigureButton = true;
-      this.retrieveFigures(this.currentJournalId);
-      console.log("upload figure btn: " + this.enableUploadFigureButton);
+      if(journalId != '') {
+        this.resetFileUpload();
+        this.figures = [];
+        this.currentJournalId = journalId;
+        this.enableUploadFigureButton = true;
+        this.retrieveFigures(this.currentJournalId);
+      }
+      else {
+        this.figures = [];
+        this.enableUploadFigureButton = false;
+      }
     });
 
     this.journalService.topicChange.subscribe((topicId: String) => {
@@ -69,7 +74,6 @@ export class FiguresComponent implements OnInit {
       this.figures = [];
       this.currentJournalId = '';
       this.enableUploadFigureButton = false;
-      console.log("upload figure btn: " + this.enableUploadFigureButton);
     });
   }
 
@@ -82,12 +86,10 @@ export class FiguresComponent implements OnInit {
     let authToken = this.userService.getCurrentUser()['authToken'];
     this.journalService.getFigures(journalId, authToken).subscribe(
       result => {
-        console.log(result);
         this.createFigureObject(result);
         this.retrievingFigures = false;
       },
       error => {
-        console.log(error);
         this.retrievingFigures = false;
       }
     );
@@ -118,7 +120,6 @@ export class FiguresComponent implements OnInit {
     let documentRegex = /doc|docx|txt|text/;
     let imageRegex = /jpg|gif|tiff|png/;
 
-    console.log("Selected figure index: " + this.selectedFigureIndex);
     let figure = this.figures[index];
     if(figure.fileType.toLowerCase() == 'pdf') {
       this.displayPDFFile = true;
@@ -158,7 +159,6 @@ export class FiguresComponent implements OnInit {
   deleteFigure(): void {
     this.displayLoadingFigureIcon = true;
     //splice works as get element at selectedFigureIndex, remove 1
-    console.log("Deleting... Selected figure index: " + this.selectedFigureIndex);
     let figureId: string = this.figures[this.selectedFigureIndex].figureId;
     let authToken = this.userService.getCurrentUser()['authToken'];
     this.journalService.deleteFigure(this.currentJournalId, figureId, authToken).subscribe(
@@ -175,7 +175,9 @@ export class FiguresComponent implements OnInit {
   }
 
   showNewFigureModal(): void {
-    this.displayNewFigureModal = true;
+    if(this.enableUploadFigureButton) {
+      this.displayNewFigureModal = true;
+    }
   }
 
   determineFileIcon(fileType: string): string {
@@ -238,26 +240,6 @@ export class FiguresComponent implements OnInit {
                                           }
                                         )
   }
-
-  /*addFilesToFigureList(): void {
-    for(let i = 0; i < this.figuresAsFiles.length; i++) {
-      let f: File = this.figuresAsFiles[i];
-      let fileInfo = f.name.split(".");
-      let fileName = fileInfo[0];
-      let fileType = fileInfo[1];
-      let newFigure: Figure = {
-        journalId: this.journalService.getCurrentJournalId(),
-        figureId: uuid(),
-        fileName: fileName,
-        fileType: fileType,
-        data: this.base64FigureStrings[i],
-        imageURL: '',
-        iconType: this.determineFileIcon(fileType.toLowerCase()),
-      }
-      this.figures.push(newFigure);
-    }
-  }
-  */
 
   closeNewFigureModal(): void {
     this.retrievingFigures = false;

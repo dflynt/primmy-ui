@@ -21,6 +21,7 @@ export class JournalComponent implements OnInit {
   text: string;
   errorLoadingJournal: boolean = false;
   displayNewJournalModal: boolean = false;
+  displayDeleteJournalConfirmationModal: boolean = false;
   displayNewJournalModalLoadingIcon: boolean = true;
   displayJournalSavingMessage: boolean = false;
 
@@ -81,7 +82,6 @@ export class JournalComponent implements OnInit {
   retrieveCurrentJournalData(journalId: string) {
     let userId = this.userService.getCurrentUser()['userid'];
     let authToken = this.userService.getCurrentUser()['authToken'];
-    console.log("retrieveCurrentJournalData() " + userId + " " + authToken);
     this.journalService.getJournalDataByJournalId(userId, journalId, authToken).subscribe(
       result => {
         if(result != null) {
@@ -110,12 +110,20 @@ export class JournalComponent implements OnInit {
       hidden: result.hidden
     }
     this.currentJournal = journal;
-    this.text = this.currentJournal.entry;
+    this.text = this.appendHeaderAndSubheaderToEntry(result.title, result.subTitle, result.entry);
+    this.text += this.currentJournal.entry;
     this.journalsForCurrentTopic.set(journal.journalId, journal);
   }
 
-  showNewJournalModal() {
-    this.displayNewJournalModal = true;
+  appendHeaderAndSubheaderToEntry(title: string, subTitle: string, entry: string) {
+    let headers: string;
+    headers = "<p><b>" + title + "</b></p>" ;
+    if(subTitle != '') {
+      headers += "<p><i>" + subTitle + "</i></p></b>";
+    }
+    headers += entry;
+
+    return headers;
   }
 
   createNewJournal() {
@@ -135,13 +143,13 @@ export class JournalComponent implements OnInit {
       lastModified: new Date(),
       hidden: false
     }
+
     this.journalService.createNewJournal(journal, authToken).subscribe(
       result => {
         this.journalService.getJournalPreviewsByUserIdAndTopicId(userId,this.journalService.getCurrentTopic(), authToken).subscribe(
           result => {
-            console.log(result);
             this.journalService.displayRetrievedPreviews(result);
-            //this.loadRetrievedPreviews(result);
+            this.closeNewJournalModal();
           },
           error => {
             console.log("Error retrieving journal previews after creating enw journal");
@@ -152,28 +160,14 @@ export class JournalComponent implements OnInit {
         console.log("Error creating journal");
       }
     )
-    this.newJournalTitle = "";
-    this.newJournalSubTitle = "";
-    this.newJournalSearchTags = "";
-    this.displayNewJournalModalLoadingIcon = false;
-    this.displayNewJournalModal = false;
-    
-  }
-  
-
-  closeNewJournalModal() {
-    this.displayNewJournalModal = false;
-    this.newJournalTitle = "";
-    this.newJournalSubTitle = "";
-    this.newJournalSearchTags = "";
   }
 
-  saveJournalProgress() {
+  saveJournalText() {
     //Set current journal to make it available
     this.displayJournalSavingMessage = true;
     let authToken = this.userService.getCurrentUser()['authToken'];
     this.currentJournal.entry = this.text;
-    this.journalService.saveJournal(this.currentJournal, authToken).subscribe(
+    this.journalService.saveJournalText(this.currentJournal, authToken).subscribe(
       result => {
         this.displayJournalSavingMessage = false;
       },
@@ -182,5 +176,40 @@ export class JournalComponent implements OnInit {
         this.displayJournalSavingMessage = false;
       }
     );
+  }
+
+  deleteCurrentJournal() {
+    let authToken = this.userService.getCurrentUser()['authToken'];
+    this.journalService.deleteJournal(this.currentJournal.journalId, authToken).subscribe(
+      result => {
+        this.journalService.removeJournalFromEntryList();
+        this.text = '';
+        this.closeDeleteJournalModal();
+      },
+      error => {
+        console.log(error);
+        this.closeDeleteJournalModal();
+      }
+    )
+  }
+
+  showNewJournalModal() {
+    this.displayNewJournalModal = true;
+  }
+  
+  closeNewJournalModal() {
+    this.displayNewJournalModalLoadingIcon = false;
+    this.displayNewJournalModal = false;
+    this.newJournalTitle = "";
+    this.newJournalSubTitle = "";
+    this.newJournalSearchTags = "";
+  }
+
+  showDeleteJournalModal() {
+    this.displayDeleteJournalConfirmationModal = true;
+  }
+
+  closeDeleteJournalModal() {
+    this.displayDeleteJournalConfirmationModal = false;
   }
 }

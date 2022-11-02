@@ -62,8 +62,8 @@ export class RestService {
     }    
     let url = this.baseURL + ":" + port + route;
     console.log("Updating journal url: " + url);
-
-    return this.httpClient.post(url, params, header);
+    console.log(params);
+    return this.httpClient.patch(url, params, header);
   }
 
   delete(route: string, port: string, params: any, authToken: string) {

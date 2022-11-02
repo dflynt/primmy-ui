@@ -9,9 +9,9 @@
 <div style="display: flex" *ngIf="!loadingIcon; else elseBlock">
     <div >
         <button id="createJournalBtn" class="journalCRUDBtn" (click)="showNewJournalModal()">Create</button>
-        <button class="journalCRUDBtn" (click)="saveJournalProgress()">Save</button>
+        <button class="journalCRUDBtn" (click)="saveJournalText()">Save</button>
         <button class="journalCRUDBtn">Edit</button>
-        <button id="deleteJournalBtn" class="journalCRUDBtn">Delete</button>
+        <button id="deleteJournalBtn" class="journalCRUDBtn" (click)="showDeleteJournalModal()">Delete</button>
         <app-journalentries id="fixedEntries"></app-journalentries>
     </div>
     <editor id="editor"
@@ -29,25 +29,35 @@
 
 <p-dialog class = "modalPopup" header="Add New Journal" [(visible)]="displayNewJournalModal" [modal]="true" [style]="{width: '20vw', 'font-family': 'monospace'}"
 [draggable]="false" [resizable]="false">
-<p class="m-0 modalPopup" style="text-align:center;">
-    <label for="journalTitle">Journal title</label>
-    <br>
-    <input id="journalTitle" type="text"  [(ngModel)]="newJournalTitle" placeholder="Required">
-    <br>
-    <br>
-    <label for="journalSubTitle">Journal Sub-title</label>
-    <br>
-    <input id="journalSubTitle" type="text"  [(ngModel)]="newJournalSubTitle" placeholder="Optional">
-    <br>
-    <br>
-    <label for="journalTags">Journal Search Tags</label>
-    <br>
-    <input id="journalTags" type="text"  [(ngModel)]="newJournalSearchTags" placeholder="Optional (comma separated)">
-    
-</p>
-<ng-template pTemplate="footer">
-    <button id="modalCloseBtn" class = "modalPopup" (click)="createNewJournal()">Create</button>
-    <button id="modalCloseBtn" class = "modalPopup" (click)="closeNewJournalModal()">Exit</button>
-</ng-template>
+    <p class="m-0 modalPopup" style="text-align:center;">
+        <label for="journalTitle">Journal title</label>
+        <br>
+        <input id="journalTitle" type="text"  [(ngModel)]="newJournalTitle" placeholder="Required">
+        <br>
+        <br>
+        <label for="journalSubTitle">Journal Sub-title</label>
+        <br>
+        <input id="journalSubTitle" type="text"  [(ngModel)]="newJournalSubTitle" placeholder="Optional">
+        <br>
+        <br>
+        <label for="journalTags">Journal Search Tags</label>
+        <br>
+        <input id="journalTags" type="text"  [(ngModel)]="newJournalSearchTags" placeholder="Optional (comma separated)">
+    </p>
+    <ng-template pTemplate="footer">
+        <button id="modalCloseBtn" class = "modalPopup" (click)="createNewJournal()">Create</button>
+        <button id="modalCloseBtn" class = "modalPopup" (click)="closeNewJournalModal()">Exit</button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog class = "modalPopup" header="Delete Journal" [(visible)]="displayDeleteJournalConfirmationModal" [modal]="true" [style]="{width: '20vw', 'font-family': 'monospace'}"
+[draggable]="false" [resizable]="false">
+    <p class="m-0 modalPopup" style="text-align:center;">
+        Are you sure you want to delete this journal?
+    </p>
+    <ng-template pTemplate="footer">
+        <button id="modalCloseBtn" class = "modalPopup" (click)="deleteCurrentJournal()">Delete</button>
+        <button id="modalCloseBtn" class = "modalPopup" (click)="closeDeleteJournalModal()">Close</button>
+    </ng-template>
 </p-dialog>
 

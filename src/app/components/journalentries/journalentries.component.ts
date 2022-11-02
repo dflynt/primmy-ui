@@ -65,16 +65,17 @@ export class JournalentriesComponent implements OnInit {
     })
 
     this.journalService.journalChange.subscribe((journalId: string) => {
-
+      if(journalId == '') {
+        this.journalPreviews.splice(this.currentJournalPreviewIndex, 1);
+        this.currentJournalPreviewIndex = -1;
+      }
     })
 
     this.journalService.previewchange.subscribe((preview: any[]) => {
       this.loadRetrievedPreviews(preview);
     })
-  }
 
-  //set character limit for the subtitle
-  //create new journal through a modal
+  }
 
   ngOnInit(): void {
     let userId = this.userService.getCurrentUser()["userid"];
@@ -134,7 +135,6 @@ export class JournalentriesComponent implements OnInit {
     })
     this.currentTopicIndex = 0;
     this.currentTopic = this.topics[this.currentTopicIndex];
-    console.log("journalEntries - loadRetrievedtopics... " + this.currentTopic.color)
     this.journalService.setCurrentTopic(this.currentTopic.topicId, this.currentTopic.topicName, this.currentTopic.color);
     this.retrievingTopics = false;
   }
@@ -196,7 +196,8 @@ export class JournalentriesComponent implements OnInit {
     this.displayNewTopicModalLoadingIcon = true;
     let authToken = this.userService.getCurrentUser()['authToken'];
     if(this.newTopicClassId.length > 0) {
-      //check for class with this id
+      // TODO
+      //Make API request to check for class with this id
     }
     else {
       let newTopic: Topic = {

@@ -53,8 +53,18 @@ export class JournalService {
     return this.rest.post("/journal/createJournal/", this.journalPortNumber, newJournal, authToken);
   }
 
-  saveJournal(existingJournal: Journal, authToken: string): Observable<any> {
-    return this.rest.patch("/journal/" + existingJournal.journalId, this.journalPortNumber, existingJournal, authToken);
+  saveJournalText(existingJournal: Journal, authToken: string): Observable<any> {
+    return this.rest.put("/journal/" + existingJournal.journalId, this.journalPortNumber, existingJournal.entry, authToken);
+  }
+
+  deleteJournal(journalId: string, authToken: string): Observable<any> {
+    return this.rest.delete("/journal/" + journalId, this.journalPortNumber, null, authToken);
+  }
+
+  removeJournalFromEntryList() {
+    this.currentJournalTitle = '';
+    this.currentJournalId = '';
+    this.journalSource.next('');
   }
 
   getCurrentJournalId(): string {
@@ -87,7 +97,6 @@ export class JournalService {
     this.currenttopicName = topicName;
     this.currentTopicId = topicId;
     this.currentTopicColor = topicColor;
-    console.log("Service... currentTopic: " + this.currentTopicColor);
     //if switching topics, current journal is unselected
     this.currentJournalTitle = "";
     this.topicSource.next(topicId);
@@ -107,8 +116,6 @@ export class JournalService {
     for(let figure of figures) {
       formParams.append('files', figure);
     }
-    console.log(figures);
-    console.log(formParams);
     return this.rest.postImages('/journal/' + journalId + '/uploadFigures', this.journalPortNumber, formParams, authToken);
   }
 
@@ -116,3 +123,4 @@ export class JournalService {
     return this.rest.delete("/journal/" + journalId + "/figure/" + figureId, this.journalPortNumber, null, authToken);
   }
 }
+
