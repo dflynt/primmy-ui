@@ -21,7 +21,7 @@ button {
     font-family: monospace;
     background-color:  #57CC99;
     color: white;
-    border-radius: 3px;
+    border-radius: 10px;
     border-color: white;
     margin-right: 2px;
     text-align:center;
@@ -38,4 +38,12 @@ button:hover {
     border-top-style: solid;
     border-bottom-color: black;
     border-bottom-style: solid;
+}
+
+#journalTitlePlaceholder {
+    font-size: 14px;
+}
+
+.errorMessage { 
+    color: red;
 }

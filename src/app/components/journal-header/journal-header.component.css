@@ -6,7 +6,7 @@
 }
 
 #imageLink {
-    margin-top: 1em;
+    margin: .5em;
     float: left;
     margin-left: 2em;
     font-size: 32px;
@@ -29,5 +29,11 @@
 }
 
 #profileLabel {
-    margin-top: 1em;
+    margin: .5em;
+    font-size: 32px;
+}
+
+#profileLabel:hover {
+    text-decoration: underline;
+    cursor: pointer;
 }

@@ -13,6 +13,10 @@ import {OrderListModule} from 'primeng/orderlist';
 import {ListboxModule} from 'primeng/listbox';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import {MatIconModule} from '@angular/material/icon'
+import {TabViewModule} from 'primeng/tabview';
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
+
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -26,9 +30,9 @@ import { FiguresComponent } from './components/figures/figures.component';
 import { JournalHeaderComponent } from './components/journal-header/journal-header.component';
 import { VerifyComponent } from './components/verify/verify.component';
 import { CookieService } from 'ngx-cookie-service';
-
 import {Interceptor} from './interceptors/interceptor';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+
 
 @NgModule({
   declarations: [
@@ -59,9 +63,13 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     ListboxModule,
     EditorModule,
     MatIconModule,
-    PdfViewerModule
+    PdfViewerModule,
+    TabViewModule,
+    InfiniteScrollModule
     ],
   providers: [CookieService, {provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true} ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+

@@ -13,6 +13,9 @@ export class JournalService {
   journalPortNumber: string = "9999";
   private currentJournalId: string;
   private currentJournalTitle: string;
+  private currentJournalTitlePlaceholder: string;
+  private currentJournalSubtitle: string;
+  private currentJournalSubtitlePlaceholder: string;
   private currentTopicId: string;
   private currenttopicName: string;
   private currentTopicColor: string;
@@ -30,6 +33,9 @@ export class JournalService {
 
   journalSource: Subject<string> = new Subject<string>();
   journalChange = this.journalSource.asObservable();
+  
+  journalTitleSource: Subject<any> = new Subject<any>();
+  journalTitlechange = this.journalTitleSource.asObservable();
 
   constructor(private rest: RestService) { }
 
@@ -54,7 +60,11 @@ export class JournalService {
   }
 
   saveJournalText(existingJournal: Journal, authToken: string): Observable<any> {
-    return this.rest.put("/journal/" + existingJournal.journalId, this.journalPortNumber, existingJournal.entry, authToken);
+    return this.rest.put("/journal/" + existingJournal.journalId + "/updateText", this.journalPortNumber, existingJournal.entry, authToken);
+  }
+
+  updateJournal(journalId: string, params: any, authToken: string): Observable<any> {
+    return this.rest.put("/journal/" + journalId, this.journalPortNumber, params, authToken);
   }
 
   deleteJournal(journalId: string, authToken: string): Observable<any> {
@@ -63,6 +73,7 @@ export class JournalService {
 
   removeJournalFromEntryList() {
     this.currentJournalTitle = '';
+    this.currentJournalSubtitle = '';
     this.currentJournalId = '';
     this.journalSource.next('');
   }
@@ -75,10 +86,36 @@ export class JournalService {
     return this.currentJournalTitle
   }
 
-  setCurrentJournal(journalId: string, journalName: string) {
-    this.currentJournalTitle = journalName;
+  getCurrentJournalSubtitle(): string {
+    return this.currentJournalSubtitle;
+  }
+
+  getCurrentJournalTitlePlaceholder(): string {
+    return this.currentJournalTitlePlaceholder;
+  }
+
+  getCurrentJournalSubtitlePlaceholder(): string {
+    return this.currentJournalSubtitlePlaceholder;
+  }
+
+  setCurrentJournal(journalId: string, journalTitle: string, journalSubtitle: string) {
+    this.currentJournalTitle = journalTitle;
+    this.currentJournalSubtitle = journalSubtitle?.length > 0 ? journalSubtitle : "";
+
+    this.currentJournalTitlePlaceholder = this.currentJournalTitle;
+    this.currentJournalSubtitlePlaceholder = this.currentJournalSubtitle;
     this.currentJournalId = journalId;
     this.journalSource.next(journalId);
+  }
+
+  updateJournalTitle(params: any) {
+    this.currentJournalTitle = params.updatedTitle;
+    this.currentJournalTitlePlaceholder = this.currentJournalTitle;
+    
+    this.currentJournalSubtitle = params.updatedSubtitle;
+    this.currentJournalSubtitlePlaceholder = this.currentJournalSubtitle;
+    
+    this.journalTitleSource.next(params);
   }
 
   displayRetrievedPreviews(previews: any[]) {

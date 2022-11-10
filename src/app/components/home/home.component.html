@@ -2,11 +2,23 @@
     <title>Primmy</title>
 </head>
 <body>
-    <app-header></app-header>
 
+    <app-header></app-header>
+    <div scroll="onScroll()">
     <div class="wrapper">
         <div class="typing-demo">
           <h1>PRIMMY</h1>
         </div>
     </div>
+    <div id="firstSection">
+        <p class="sectionText">A single place for<br> all of your thoughts</p>        
+    </div>
+    <div id="secondSection">
+        <p [className]="sectionTwoDisplayed ? 'scrollSectionText' : 'invisibleSectionText'">Multiple workbooks <br>for easy organization</p>        
+    </div>
+    <div id="thirdSection">
+        <p [className]="sectionThreeDisplayed ? 'scrollSectionText' : 'invisibleSectionText'">Add attachments <br>to every journal <br>in your workbook</p>        
+    </div>
+    </div>
+
 </body>

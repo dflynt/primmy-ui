@@ -1,7 +1,11 @@
 <app-journal-header></app-journal-header>
 <div id="breadcrumbContainer" style="width: 100%; display:inline-flex;" *ngIf="journalService.getCurrentTopic() != null;" [style.background-color] = "journalColor">
-    <h2 style="font-family: monospace; margin-left: 1em;">{{journalService.getCurrentTopicName()}} 
-        <span *ngIf="journalService.getCurrentJournalTitle() != ''"> > {{journalService.getCurrentJournalTitle()}}</span>
+    <h2 style="font-family: monospace; margin-left: 1em; color : #e7f4dd;">{{journalService.getCurrentTopicName()}} 
+        <span *ngIf="journalService.getCurrentJournalTitle() != ''"> > {{journalService.getCurrentJournalTitle()}}  
+        </span>
+        <span id="journalTitlePlaceholder" *ngIf="journalService.getCurrentJournalSubtitle() != ''">
+            <i> {{journalService.getCurrentJournalSubtitle()}}</i>
+        </span>
     </h2>
     <p style="margin-left: 2em;" *ngIf="displayJournalSavingMessage">Saving journal...</p>
 </div>
@@ -10,7 +14,7 @@
     <div >
         <button id="createJournalBtn" class="journalCRUDBtn" (click)="showNewJournalModal()">Create</button>
         <button class="journalCRUDBtn" (click)="saveJournalText()">Save</button>
-        <button class="journalCRUDBtn">Edit</button>
+        <button class="journalCRUDBtn" (click)="showEditJournalModal()">Edit</button>
         <button id="deleteJournalBtn" class="journalCRUDBtn" (click)="showDeleteJournalModal()">Delete</button>
         <app-journalentries id="fixedEntries"></app-journalentries>
     </div>
@@ -27,26 +31,45 @@
     </div>
 </ng-template>
 
-<p-dialog class = "modalPopup" header="Add New Journal" [(visible)]="displayNewJournalModal" [modal]="true" [style]="{width: '20vw', 'font-family': 'monospace'}"
+<p-dialog class = "modalPopup" header="Add New Entry" [(visible)]="displayNewJournalModal" [modal]="true" [style]="{width: '20vw', 'font-family': 'monospace'}"
 [draggable]="false" [resizable]="false">
     <p class="m-0 modalPopup" style="text-align:center;">
-        <label for="journalTitle">Journal title</label>
+        <label for="journalTitle">Entry title</label>
         <br>
         <input id="journalTitle" type="text"  [(ngModel)]="newJournalTitle" placeholder="Required">
         <br>
         <br>
-        <label for="journalSubTitle">Journal Sub-title</label>
+        <label for="journalSubTitle">Entry Sub-title</label>
         <br>
         <input id="journalSubTitle" type="text"  [(ngModel)]="newJournalSubTitle" placeholder="Optional">
         <br>
         <br>
-        <label for="journalTags">Journal Search Tags</label>
-        <br>
-        <input id="journalTags" type="text"  [(ngModel)]="newJournalSearchTags" placeholder="Optional (comma separated)">
     </p>
     <ng-template pTemplate="footer">
         <button id="modalCloseBtn" class = "modalPopup" (click)="createNewJournal()">Create</button>
-        <button id="modalCloseBtn" class = "modalPopup" (click)="closeNewJournalModal()">Exit</button>
+        <button id="modalCloseBtn" class = "modalPopup" (click)="closeNewJournalModal()">Close</button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog class = "modalPopup" header="Edit Entry" [(visible)]="displayEditJournalModal" [modal]="true" [style]="{width: '20vw', 'font-family': 'monospace'}"
+[draggable]="false" [resizable]="false">
+    <p class="m-0 modalPopup" style="text-align:center;">
+        <span class="errorMessage" *ngIf="displayInvalidUpdatedTitlesMessage">Main title can not be empty.</span>
+        <br>
+        <label for="journalTitle">Entry title</label>
+        <br>
+        <input id="journalTitle" type="text" [(ngModel)]="editedJournalTitle"> 
+        <br>
+        <br>
+        <label for="journalSubTitle">Entry Sub-title</label>
+        <br>
+        <input id="journalSubTitle" type="text" [(ngModel)]="editedJournalSubtitle" >
+        <br>
+        <br>
+    </p>
+    <ng-template pTemplate="footer">
+        <button id="modalCloseBtn" class = "modalPopup" (click)="updateJournal()">Update</button>
+        <button id="modalCloseBtn" class = "modalPopup" (click)="closeEditJournalModal()">Close</button>
     </ng-template>
 </p-dialog>
 

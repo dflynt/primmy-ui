@@ -71,6 +71,11 @@ export class JournalentriesComponent implements OnInit {
       }
     })
 
+    this.journalService.journalTitlechange.subscribe((titles: any) => {
+      this.currentJournalPreview.title = titles.updatedTitle;
+      this.currentJournalPreview.subTitle = titles.updatedSubtitle;
+    })
+
     this.journalService.previewchange.subscribe((preview: any[]) => {
       this.loadRetrievedPreviews(preview);
     })
@@ -117,7 +122,7 @@ export class JournalentriesComponent implements OnInit {
   setSelectedPreviewIndex(index: number) {
     this.currentJournalPreviewIndex = index;
     this.currentJournalPreview = this.journalPreviews[index];
-    this.journalService.setCurrentJournal(this.journalPreviews[index].journalId, this.journalPreviews[index].title);
+    this.journalService.setCurrentJournal(this.journalPreviews[index].journalId, this.journalPreviews[index].title, this.journalPreviews[index].subTitle);
   }
 
   loadRetrievedTopics(result: any) {

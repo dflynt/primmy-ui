@@ -106,6 +106,7 @@
     padding-bottom: 5px;
     padding-top: 5px;
     border-radius: 2px;
+
 }
 .journalPreview:hover {
     background-color: #DDF4EA;
@@ -120,11 +121,28 @@
     font-family: monospace;
 }
 
+.journalPreviewTitleEllipses {
+  width: 150px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  float: left;
+}
+
+.journalPreviewSubTitleEllipsis {
+  width: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .preview-subTitle {
     font-style:italic;
+    margin-left: 10px;
 }
 
 .preview-title {
+
     font-size: 16px;
     font-weight:bold;
     margin-left: 10px;

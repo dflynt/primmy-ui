@@ -5,7 +5,7 @@
     </div>
     <ng-template #elseBlock>
         <div id="figuresContainer">
-            <p id="noJournalSelectedBtn" *ngIf="currentJournalId.length == 0"><br>Select a journal to retrieve figures...</p>
+            <p id="noJournalSelectedBtn" *ngIf="currentJournalId != null && currentJournalId.length == 0"><br>Select a journal to retrieve figures...</p>
             <ul style="list-style: none; padding: 2px;">
                 <li *ngFor="let figure of figures; let i = index">
                     <div class="figure"
@@ -22,12 +22,15 @@
 
 <p-dialog class = "modalPopup" header="Add Figures" [(visible)]="displayNewFigureModal" [modal]="true" [style]="{width: '20vw', 'font-family': 'monospace'}"
 [draggable]="false" [resizable]="false">
-    <input type="file" class="file-input" #fileUpload accept="image/*, text/*, .doc, .docx, .pdf" (change)="onFileSelect($event)" multiple="multiple">
-
+    <input type="file" class="file-input" id="img" #fileUpload 
+            accept="image/*, text/*, .doc, .docx, .pdf, .xlsx, .xlx" 
+            (change)="onFileSelect($event)" style="display:none;" multiple="multiple">
+    <button id="chooseFileBtn"(click)="fileUpload.click()">Choose Files</button>
+    <br>
     <h4 *ngIf="displayFailedUploadErrorMessage">Error uploading files</h4>
     <ng-template pTemplate="footer">
-        <button id="modalCloseBtn" class = "modalPopup" (click)="attemptSave()">Upload</button>
-        <button id="modalCloseBtn" class = "modalPopup" (click)="closeNewFigureModal()">Exit</button>
+        <button class="figureModalBtn" (click)="attemptSave()">Upload</button>
+        <button class="figureModalBtn" (click)="closeNewFigureModal()">Exit</button>
     </ng-template>
 </p-dialog>
 
@@ -38,21 +41,39 @@
     <div>
         <!--Document Viewer-->
         <div class="figureContainer" *ngIf="displayTextFile && !displayLoadingFigureIcon">
-            <span id="textFigure">{{docText}}</span>
-            <br>
             <h2>{{figures[selectedFigureIndex]?.fileName}}.{{figures[selectedFigureIndex]?.fileType}}</h2>
+            <span id="textFigure">{{docText}}</span>
         </div>
-        
-        
+
+        <div class="figureContainer" *ngIf="displaySpreadsheetFile && !displayLoadingFigureIcon">
+            <h2 >{{figures[selectedFigureIndex]?.fileName}}.{{figures[selectedFigureIndex]?.fileType}}</h2>
+            <div style="width: 1000px; height: 600px; margin: 0 auto; border: 1px solid;">
+                <table id="excelFigure">
+                    <tbody>
+                        <tr *ngFor="let row of excelData">
+                            <td *ngFor="let val of row">
+                                {{val}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <button [ngClass]="{'activeExcelTab': selectedExcelTabIndex === i}" class="excelSheetBtn"
+                    *ngFor="let sheet of excelSheets | keyvalue; let i = index" 
+                    (click)="setSelectedExcelSheetIndex(i)">{{sheet.key}}</button>
+                </div>
+            </div>
+        </div>
+    
         <!--Image Viewer-->
         <div class="figureContainer" *ngIf="displayImageFile && !displayLoadingFigureIcon">
-            <img id="imageFigure" [style.width]="imageZoomText" [src]="imageURL"/>
-            <br>
             <h2>{{figures[selectedFigureIndex]?.fileName}}.{{figures[selectedFigureIndex]?.fileType}}</h2>
+            <img id="imageFigure" [style.width]="imageZoomText" [src]="imageURL"/>
         </div>
         
         <!--pdf viewer-->
         <div class="figureContainer" *ngIf="displayPDFFile && !displayLoadingFigureIcon">
+            <h2>{{figures[selectedFigureIndex]?.fileName}}.{{figures[selectedFigureIndex]?.fileType}}</h2>
             <pdf-viewer id="pdfFigure" [src]="pdfURL"
                 [render-text]="true"
                 [original-size]="false"
@@ -61,8 +82,6 @@
                 [zoom]="pdfZoon"
                 style="width: 1000px; height: 500px; border-radius: 1px; border-style: solid"
             ></pdf-viewer>    
-            <br>
-            <h2>{{figures[selectedFigureIndex]?.fileName}}.{{figures[selectedFigureIndex]?.fileType}}</h2>
             <br>
             <div class="zoomButtonContainer">
                 <i class="fa fa-search-plus fa-2x" style="margin-left: 0%;"(click)="increasePdfZoom()"></i>
@@ -73,11 +92,12 @@
     <br>
     <br>
     <div *ngIf="displayLoadingFigureIcon">
+        <img src="../../../assets/images/loading.gif" style="margin-left: 50%;"/>
+        <br>
         <p style="margin-left: 47%; font-family: monospace;">Deleting Figure...</p>
         <br>
-        <img src="../../../assets/images/loading.gif" style="margin-left: 50%;"/>
     </div>
-<ng-template pTemplate="footer">
+    <ng-template pTemplate="footer">
         <button class = "figureViewerBtn" (click)="closeFigureViewer()">Close</button>
         <button class = "figureViewerBtn" (click)="deleteFigure()">Delete Figure</button>
     </ng-template>

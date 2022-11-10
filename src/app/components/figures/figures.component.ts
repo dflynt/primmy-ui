@@ -6,6 +6,7 @@ import { UserService } from 'src/app/services/user/user.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, ReplaySubject } from 'rxjs';
 import { v4 as uuid } from 'uuid';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-figures',
@@ -27,6 +28,12 @@ export class FiguresComponent implements OnInit {
   imageURL: any;
   imageZoom: number = 100;
   imageZoomText: string = '100%';
+  excelData: any;
+  excelWorkbook: any;
+  selectedExcelTabIndex: number = 0;
+  excelSheets: Map<string, XLSX.WorkSheet> = new Map<string, XLSX.WorkSheet>();
+  excelSheetsJSON: Map<string, any> = new Map<string, any>();
+
   docText: string;
   pdfURL: string;
   pdfZoon: number = 2.5;
@@ -39,6 +46,7 @@ export class FiguresComponent implements OnInit {
   displayTextFile: boolean = false;
   displayImageFile: boolean = false;
   displayPDFFile: boolean = false;
+  displaySpreadsheetFile: boolean = false;
   displayLoadingFigureIcon: boolean = false;
 
   @ViewChild('fileUpload')
@@ -53,7 +61,7 @@ export class FiguresComponent implements OnInit {
     this.journalService = journalService;
     this.restService = restService;
     this.userService = userService;
-
+  
     this.journalService.journalChange.subscribe((journalId: string) => {
       if(journalId != '') {
         this.resetFileUpload();
@@ -78,7 +86,7 @@ export class FiguresComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.retrievingFigures = true;
+    //this.retrievingFigures = true;
   }
   
   retrieveFigures(journalId: string): void {  
@@ -96,6 +104,9 @@ export class FiguresComponent implements OnInit {
   }
 
   createFigureObject(result: any) {
+    //if filetype == image file like .jpg/.png then add to image array
+    //when adding figure and type is .jpg/.png, populate image array
+    //the HTML img tags will have their src pointing to an array
     this.figures = [];
     result.map((figure: Figure) => {
       let fileInfo = figure.fileName.split(".");
@@ -115,16 +126,23 @@ export class FiguresComponent implements OnInit {
   }
 
   setSelectedFigureIndex(index: number) {
+    if(this.selectedFigureIndex != index) {
+      this.selectedExcelTabIndex = 0;
+    }
     this.selectedFigureIndex = index;
+    this.displayFigureViewer = true;
+    console.log("this.displayFigureViewer: " + this.displayFigureViewer);
     this.displayLoadingFigureIcon = true;
     let documentRegex = /doc|docx|txt|text/;
     let imageRegex = /jpg|gif|tiff|png/;
+    let spreadsheetRegex = /xlx|xlsx/;
 
     let figure = this.figures[index];
     if(figure.fileType.toLowerCase() == 'pdf') {
       this.displayPDFFile = true;
       this.displayTextFile = false;
       this.displayImageFile = false;
+      this.displaySpreadsheetFile = false;
       let f: string = this.figures[index].data;
         
       this.pdfURL = "data:application/pdf;base64," + f; 
@@ -134,6 +152,7 @@ export class FiguresComponent implements OnInit {
       this.displayPDFFile = false;
       this.displayTextFile = true;
       this.displayImageFile = false;
+      this.displaySpreadsheetFile = false;
       let f: string = this.figures[index].data;
       this.docText = atob(f).toString();
     }
@@ -142,14 +161,51 @@ export class FiguresComponent implements OnInit {
       this.displayPDFFile = false;
       this.displayTextFile = false;
       this.displayImageFile = true;
+      this.displaySpreadsheetFile = false;
       let f: string = this.figures[index].data;
       this.imageURL = this._sanitizer.bypassSecurityTrustResourceUrl('data:image/*;base64,' + f);
+      //send this imageURL to the journal service and add a listener in the journal class for new images. 
+      //also listen for deletes
       this.imageZoom = 80;
       this.imageZoomText = "80%";
     }
+    
+    else if(figure.fileType.toLowerCase().match(spreadsheetRegex)) {
+      this.excelSheets.clear();
+      this.displaySpreadsheetFile = true;
+      this.displayPDFFile = false;
+      this.displayTextFile = false;
+      this.displayImageFile = false;
+      let f: string = this.figures[index].data;
+      const wb: XLSX.WorkBook = XLSX.read(atob(f).toString(), { type: 'binary' });
+      this.excelWorkbook = wb;
 
-    this.displayFigureViewer = true;
+      /* grab first sheet */
+      for(let i = 0; i < wb.SheetNames.length; i++) {
+        let sheetName: string = this.excelWorkbook.SheetNames[i];
+        this.excelSheets.set(this.excelWorkbook.SheetNames[i], this.excelWorkbook.Sheets[sheetName]);
+        this.excelSheetsJSON.set(this.excelWorkbook.SheetNames[i], XLSX.utils.sheet_to_json(this.excelWorkbook.Sheets[sheetName], {header: 1}) );
+      }
+    
+      const wsname: string = this.excelWorkbook.SheetNames[this.selectedExcelTabIndex];
+      const ws: XLSX.WorkSheet = this.excelWorkbook.Sheets[wsname];
+
+      /* save data */
+      this.excelData = this.excelSheetsJSON.get(wsname);
+    }
+
     this.displayLoadingFigureIcon = false;
+  }
+
+  setSelectedExcelSheetIndex(index: number): void {
+    this.displayLoadingFigureIcon = true;
+    this.selectedExcelTabIndex = index;
+    
+    let sheetName = this.excelWorkbook.SheetNames[index];
+    //let data = XLSX.utils.sheet_to_json(this.excelWorkbook.Sheets[sheetName], {header: 1});
+    this.excelData =  this.excelSheetsJSON.get(sheetName);
+    this.displayLoadingFigureIcon = false;
+    
   }
 
   closeFigureViewer(): void {
@@ -220,6 +276,7 @@ export class FiguresComponent implements OnInit {
   convertFile(file : File) : Observable<string> {
     const result = new ReplaySubject<string>(1);
     const reader = new FileReader();
+    console.log(file.name);
     reader.readAsBinaryString(file);
     reader.onload = (event) => result.next(btoa(event!.target!.result!.toString()));
     return result;

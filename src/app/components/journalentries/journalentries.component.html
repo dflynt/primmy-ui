@@ -1,13 +1,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <div id="journalPreviewListContainer">
-    <div *ngIf="currentTopic != null">
-        <!--<button id="createJournalBtn" class="journalCRUDBtn" (click)="showNewJournalModal()">Create</button>
-        <button class="journalCRUDBtn" (click)="showNewJournalModal()">Save</button>
-        <button class="journalCRUDBtn">Edit</button>
-        <button id="deleteJournalBtn" class="journalCRUDBtn">Delete</button>
-        -->
-    </div>
     <div class="journalPreviewContainer">
         <div class="dropdown">
             <button *ngIf="retrievingTopics">
@@ -15,17 +8,17 @@
             </button>
             <button class="dropbtn" id="newTopicDropdownBtn" *ngIf="!retrievingTopics;">
                 <span *ngIf="topics.length == 0; else showTopics" (click)="showNewTopicModal()">
-                    Add Topic
+                    Add Workbook
                 </span>
                 <ng-template #showTopics>
                     <div>
-                        <span style="margin-left: 0em;">{{currentTopic.topicName}} </span>
                         <i class="fa fa-caret-down"></i>
+                        <span style="margin-left: 0em;"> {{currentTopic.topicName}}</span>
                     </div>
                 </ng-template>
             </button>
             <div class="dropdown-content" >
-                <p class="topic" *ngIf="topics.length != 0" (click)="showNewTopicModal()">Add new topic</p>
+                <p class="topic" *ngIf="topics.length != 0" (click)="showNewTopicModal()">Add Workbook</p>
                 <p class="topic" (click)="changeTopics(k);" *ngFor="let topic of topics; let k = index">
                     {{topic.topicName}}
                 </p>
@@ -43,17 +36,25 @@
             <div class="journalPreview" *ngFor="let entry of journalPreviews; let i = index"
                 [ngClass]="{'active': currentJournalPreviewIndex === i}"
                 (click)="setSelectedPreviewIndex(i)">
-                <p><span class="preview-title">{{entry.title}}</span> - {{entry.createdDate | date : "shortDate"}}</p>
-                <p class="preview-subTitle">{{entry.subTitle}}</p>
+                <div class="journalPreviewTitleEllipses">
+                    <span class="preview-title">{{entry.title}} </span>
+                </div>
+                <div class="journalPreviewDateEllipses">
+                    &nbsp;&nbsp;<i>{{entry.createdDate | date : "shortDate"}}</i>
+                </div>
+                <div class="journalPreviewSubTitleEllipsis">
+                    <br>
+                    <span class="preview-subTitle">{{entry.subTitle}}</span>
+                </div>
             </div> 
         </ng-template>
         
     </div>
 
-    <p-dialog class = "modalPopup" header="Add New Topic" [(visible)]="displayNewTopicModal" [modal]="true" [style]="{width: '20vw', 'font-family': 'monospace'}"
+    <p-dialog class = "modalPopup" header="Add New Workbook" [(visible)]="displayNewTopicModal" [modal]="true" [style]="{width: '20vw', 'font-family': 'monospace'}"
     [draggable]="false" [resizable]="false">
         <p class="m-0 modalPopup" style="text-align:center;">
-            <label for="topicName">Topic Name</label>
+            <label for="topicName">Workbook Name</label>
             <br>
             <input id="topicName" type="text"  [(ngModel)]="newTopicName" placeholder="Required">
             <br>

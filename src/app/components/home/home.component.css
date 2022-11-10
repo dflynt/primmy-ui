@@ -25,6 +25,71 @@ hr {
   padding-top: 3em;
 }
 
+.sectionText {
+  font-size: 84px;
+  text-align: right;
+  padding-top: 3em;
+  margin-right: 2em;
+  font-family: monospace;
+  animation-name: sectionFadeIn;
+  animation-duration: .6s;
+  animation-delay: 1.4s;
+  animation-fill-mode: both;
+}
+
+.scrollSectionText {
+  font-size: 84px;
+  text-align: right;
+  padding-top: 3em;
+  margin-right: 2em;
+  font-family: monospace;
+  animation-name: sectionFadeIn;
+  animation-duration: .6s;
+  animation-fill-mode: both;
+}
+
+.invisibleSectionText {
+  display: none;
+}
+
+@keyframes sectionFadeIn {
+  from {opacity: 0; margin-top: 10px;}
+  to {opacity: 1; margin-top: 0px;}
+}
+
+#firstSection {
+  height: 55em;
+  width: 100%; 
+  margin: 0 auto;
+  background-color: #57CC99;
+  color: #DDF4EA;
+  border: 1px solid #57CC99;
+}
+
+
+#secondSection {
+  margin-top: 20em;
+  height: 55em;
+  width: 100%; 
+  margin: 0 auto;
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+
+}
+
+#thirdSection {
+  margin-top: 20em;
+  height: 55em;
+  width: 100%; 
+  margin: 0 auto;
+  background-color: #57CC99;
+  color: #DDF4EA;
+  border: 1px solid #57CC99;
+}
+
+
+
 .typing-demo {
   width: 12ch;
   animation: typing 1.2s steps(6), blink .5s step-end 3;

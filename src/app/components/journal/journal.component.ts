@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Editor } from 'primeng/editor';
+import { TinyMCE } from 'tinymce/tinymce';
+
 import { Journal } from 'src/app/models/Journal';
 import { User } from 'src/app/models/User';
 import { JournalService } from 'src/app/services/journal/journal.service';
@@ -12,7 +13,6 @@ import { UserService } from 'src/app/services/user/user.service';
   styleUrls: ['./journal.component.css']
 })
 export class JournalComponent implements OnInit {
-  
   journalsForCurrentTopic = new Map();
   journalService: JournalService;
   userService: UserService;
@@ -21,8 +21,11 @@ export class JournalComponent implements OnInit {
   text: string;
   errorLoadingJournal: boolean = false;
   displayNewJournalModal: boolean = false;
+  displayEditJournalModal: boolean = false;
   displayDeleteJournalConfirmationModal: boolean = false;
   displayNewJournalModalLoadingIcon: boolean = true;
+  displayEditJournalModalLoadingIcon: boolean = false;
+  displayInvalidUpdatedTitlesMessage: boolean = false;
   displayJournalSavingMessage: boolean = false;
 
   journalColor: string;
@@ -31,7 +34,9 @@ export class JournalComponent implements OnInit {
 
   newJournalTitle: string = "";
   newJournalSubTitle: string = "";
-  newJournalSearchTags: string = "";
+
+  editedJournalTitle: string = "";
+  editedJournalSubtitle: string = "";
   
   constructor(journalService: JournalService, router: Router, userService: UserService) {
     this.journalService = journalService;
@@ -44,9 +49,10 @@ export class JournalComponent implements OnInit {
     this.journalService.topicColorchange.subscribe((topicColor: string) => {
       this.journalColor = topicColor;
     })
-   }
+  }
 
   ngOnInit(): void {
+    
     if(this.userService.getCurrentUser() == null) {
       this.loadingIcon = true;
       let cookies = this.userService.getCookies();
@@ -75,11 +81,11 @@ export class JournalComponent implements OnInit {
     }
     else {
       return;
-    }
-    
+    }  
   }
 
   retrieveCurrentJournalData(journalId: string) {
+    this.text = '';
     let userId = this.userService.getCurrentUser()['userid'];
     let authToken = this.userService.getCurrentUser()['authToken'];
     this.journalService.getJournalDataByJournalId(userId, journalId, authToken).subscribe(
@@ -110,20 +116,10 @@ export class JournalComponent implements OnInit {
       hidden: result.hidden
     }
     this.currentJournal = journal;
-    this.text = this.appendHeaderAndSubheaderToEntry(result.title, result.subTitle, result.entry);
     this.text += this.currentJournal.entry;
+    this.editedJournalTitle = this.currentJournal.title;
+    this.editedJournalSubtitle = this.currentJournal.subTitle;
     this.journalsForCurrentTopic.set(journal.journalId, journal);
-  }
-
-  appendHeaderAndSubheaderToEntry(title: string, subTitle: string, entry: string) {
-    let headers: string;
-    headers = "<p><b>" + title + "</b></p>" ;
-    if(subTitle != '') {
-      headers += "<p><i>" + subTitle + "</i></p></b>";
-    }
-    headers += entry;
-
-    return headers;
   }
 
   createNewJournal() {
@@ -143,6 +139,9 @@ export class JournalComponent implements OnInit {
       lastModified: new Date(),
       hidden: false
     }
+
+    console.log("New journal created");
+    console.log(journal);
 
     this.journalService.createNewJournal(journal, authToken).subscribe(
       result => {
@@ -178,6 +177,33 @@ export class JournalComponent implements OnInit {
     );
   }
 
+  updateJournal() {
+    this.displayEditJournalModalLoadingIcon = true;
+    let authToken = this.userService.getCurrentUser()['authToken'];
+    let params = {
+      updatedTitle: this.editedJournalTitle,
+      updatedSubtitle: this.editedJournalSubtitle
+    }
+    if(params.updatedTitle.length == 0) {
+      console.log("Title must not be empty.");
+      this.displayInvalidUpdatedTitlesMessage = true;
+      this.editedJournalTitle = this.currentJournal.title;
+      this.editedJournalSubtitle = this.currentJournal.subTitle;
+      return;
+    }
+    this.journalService.updateJournal(this.journalService.getCurrentJournalId(), params, authToken).subscribe(
+      result => {
+        this.displayInvalidUpdatedTitlesMessage = false;
+        this.retrieveCurrentJournalData(this.currentJournal.journalId);
+        this.journalService.updateJournalTitle(params);
+        this.closeEditJournalModal();
+      },
+      error => {
+        this.displayInvalidUpdatedTitlesMessage = true;
+      }
+    )
+  }
+
   deleteCurrentJournal() {
     let authToken = this.userService.getCurrentUser()['authToken'];
     this.journalService.deleteJournal(this.currentJournal.journalId, authToken).subscribe(
@@ -193,6 +219,28 @@ export class JournalComponent implements OnInit {
     )
   }
 
+  getCurrentJournal(): Journal {
+    if(this.currentJournal == null) {
+      let emptyJournal: Journal = {
+          id: "",
+          journalId: "",
+          userId: "",
+          topicId: this.journalService.getCurrentTopic(),
+          title: "",
+          subTitle: "",
+          entry: "",
+          figures: "",
+          createdDate: new Date(),
+          lastModified: new Date(),
+          hidden: false
+        }
+        return emptyJournal;
+      }
+      
+
+      return this.currentJournal;
+  }
+
   showNewJournalModal() {
     this.displayNewJournalModal = true;
   }
@@ -202,7 +250,17 @@ export class JournalComponent implements OnInit {
     this.displayNewJournalModal = false;
     this.newJournalTitle = "";
     this.newJournalSubTitle = "";
-    this.newJournalSearchTags = "";
+  }
+
+  showEditJournalModal() {
+    this.displayEditJournalModal = true;
+  }
+
+  closeEditJournalModal() {
+    this.editedJournalTitle = this.currentJournal.title;
+    this.editedJournalSubtitle = this.currentJournal.subTitle;
+    this.displayInvalidUpdatedTitlesMessage = false;
+    this.displayEditJournalModal = false;
   }
 
   showDeleteJournalModal() {

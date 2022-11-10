@@ -21,13 +21,13 @@
     opacity: 0;
     margin-right: 4em;
     animation-name: fadeIn;
-    animation-duration: 1s;
+    animation-duration: .6s;
     animation-delay: 1.4s;
     animation-fill-mode: both;
 }
 
 @keyframes fadeIn {
-    from {opacity: 0; margin-top: 175px;}
+    from {opacity: 0; margin-top: 10px;}
     to {opacity: 1; margin-top: 0px;}
 }
 
@@ -48,5 +48,9 @@ a {
     text-decoration: none;
     display: inline;
     color: black;
+}
+
+a:hover {
+    text-decoration:underline;
 }
 
