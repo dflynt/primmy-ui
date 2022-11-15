@@ -44,49 +44,75 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  saveUpdatedUserData(updatedField: string): void {
-    console.log("updated field: " + updatedField);
-    console.log("Saving new user info");
+  saveUpdatedFirstName(): void {
+    console.log("Saving updated first name");
     console.log(this.userService.getCurrentUser());
+    this.editedFirstName = "";
   }
+  closeFirstNameInput(): void {
+    this.editFirstNameInputEnabled = false;
+    this.editedFirstName = "";
+  }
+
+
+  saveUpdatedLastName(): void {
+    console.log("Saving updated last name");
+    console.log(this.userService.getCurrentUser());
+    this.editedLastName = "";
+
+  }
+  closeLastNameInput(): void {
+    this.editLastNameInputEnabled = false;
+    this.editedLastName = "";
+  }
+
+
+  saveUpdatedInstitutionName(): void {
+    console.log("Saving updated institution");
+    console.log(this.userService.getCurrentUser());
+    this.editedInstitution = "";
+  }
+  closeInstitutionInput(): void {
+    this.editInstitutionInputEnabled = false;
+    this.editedInstitution = "";
+  }
+
+
+  saveUpdatedFieldName(): void {
+    console.log("Saving updated field");
+    console.log(this.userService.getCurrentUser());
+    this.editedField = "";
+  }
+  closeFieldInput(): void {
+    this.editFieldInputEnabled = false;
+    this.editedField = "";
+  }
+
+
+  saveUpdatedFocusName(): void {
+    console.log("Saving updated focus");
+    console.log(this.userService.getCurrentUser());
+    this.editedFocus = "";
+  }
+  closeFocusInput(): void {
+    this.editFocusInputEnabled = false;
+    this.editedFocus = "";
+  }
+
 
   showFirstNameInput(): void {
     this.editFirstNameInputEnabled = true;
   }
-
-  closeFirstNameInput(): void {
-    this.editFirstNameInputEnabled = false;
-  }
-
   showLastNameInput(): void {
     this.editLastNameInputEnabled = true;
   }
-
-  closeLastNameInput(): void {
-    this.editLastNameInputEnabled = false;
-  }
-
   showInstitutionInput(): void {
     this.editInstitutionInputEnabled = true;
   }
-
-  closeInstitutionInput(): void {
-    this.editInstitutionInputEnabled = false;
-  }
-
   showFieldInput(): void {
     this.editFieldInputEnabled = true;
   }
-
-  closeFieldInput(): void {
-    this.editFieldInputEnabled = false;
-  }
-
   showFocusInput(): void {
     this.editFocusInputEnabled = true;
-  }
-
-  closeFocusInput(): void {
-    this.editFocusInputEnabled = false;
   }
 }

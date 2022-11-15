@@ -33,6 +33,7 @@ import { CookieService } from 'ngx-cookie-service';
 import {Interceptor} from './interceptors/interceptor';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ProfileComponent } from './components/profile/profile.component';
+import { GroupsComponent } from './components/groups/groups.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     FiguresComponent,
     JournalHeaderComponent,
     VerifyComponent,
-    ProfileComponent
+    ProfileComponent,
+    GroupsComponent
   ],
   imports: [
     BrowserModule,

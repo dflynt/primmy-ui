@@ -17,7 +17,7 @@
                 <td>                
                     <img class="editIcon" *ngIf="!editFirstNameInputEnabled; else displayFirstNameEditButtons;" (click)="showFirstNameInput()" src="../../../assets/images/editIcon.png"/>
                     <ng-template #displayFirstNameEditButtons>
-                        <img class="editIcon" (click)="saveUpdatedUserData('firstName');" src="../../../assets/images/greenCheckMark.png"/>
+                        <img class="editIcon" (click)="saveUpdatedFirstName();" src="../../../assets/images/greenCheckMark.png"/>
                         <img class="editIcon" (click)="closeFirstNameInput()"src="../../../assets/images/redXMark.png"/>
                     </ng-template>
                 </td>
@@ -36,7 +36,7 @@
                     <img class="editIcon" *ngIf="!editLastNameInputEnabled; else displayLastNameEditButtons;" (click)="showLastNameInput()" src="../../../assets/images/editIcon.png"/>
                     <ng-template #displayLastNameEditButtons>
                         <div >
-                            <img class="editIcon" (click)="saveUpdatedUserData('lastName');" src="../../../assets/images/greenCheckMark.png"/>
+                            <img class="editIcon" (click)="saveUpdatedLastName();" src="../../../assets/images/greenCheckMark.png"/>
                             <img class="editIcon" (click)="closeLastNameInput()" src="../../../assets/images/redXMark.png"/>
                         </div>
                     </ng-template>
@@ -56,7 +56,7 @@
                     <img class="editIcon" *ngIf="!editInstitutionInputEnabled; else displayInstitutionEditButtons;" (click)="showInstitutionInput()" src="../../../assets/images/editIcon.png"/>
                     <ng-template #displayInstitutionEditButtons>
                         <div >
-                            <img class="editIcon" (click)="saveUpdatedUserData('editedInstitution');" src="../../../assets/images/greenCheckMark.png"/>
+                            <img class="editIcon" (click)="saveUpdatedInstitutionName();" src="../../../assets/images/greenCheckMark.png"/>
                             <img class="editIcon" (click)="closeInstitutionInput()" src="../../../assets/images/redXMark.png"/>
                         </div>
                     </ng-template>
@@ -76,7 +76,7 @@
                     <img class="editIcon" *ngIf="!editFieldInputEnabled; else displayFieldEditButtons;" (click)="showFieldInput()" src="../../../assets/images/editIcon.png"/>
                     <ng-template #displayFieldEditButtons>
                         <div >
-                            <img class="editIcon" (click)="saveUpdatedUserData('editedField');" src="../../../assets/images/greenCheckMark.png"/>
+                            <img class="editIcon" (click)="saveUpdatedFieldName();" src="../../../assets/images/greenCheckMark.png"/>
                             <img class="editIcon" (click)="closeFieldInput()" src="../../../assets/images/redXMark.png"/>
                         </div>
                     </ng-template>
@@ -96,7 +96,7 @@
                     <img class="editIcon" *ngIf="!editFocusInputEnabled; else displayFocusEditButtons;" (click)="showFocusInput()" src="../../../assets/images/editIcon.png"/>
                     <ng-template #displayFocusEditButtons>
                         <div >
-                            <img class="editIcon" (click)="saveUpdatedUserData('editedFocus');" src="../../../assets/images/greenCheckMark.png"/>
+                            <img class="editIcon" (click)="saveUpdatedFocusName();" src="../../../assets/images/greenCheckMark.png"/>
                             <img class="editIcon" (click)="closeFocusInput()" src="../../../assets/images/redXMark.png"/>
                         </div>
                     </ng-template>

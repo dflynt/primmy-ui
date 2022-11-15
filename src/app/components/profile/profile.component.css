@@ -1,18 +1,11 @@
 #profileContainer {
     width: 40em;
-    height: 45em;
+    height: 43em;
     background-color: #57CC99;
     color: white;
     float: left;
     font-family: monospace;
     padding-left: 2m;
-}
-
-#organizationContainer {
-    width: 35em;
-    height: 60em;
-    background-color: #57CC99;
-    float: left;
 }
 
 table {
