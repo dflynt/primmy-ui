@@ -10,6 +10,7 @@
     float: left;
     margin-left: 2em;
     font-size: 32px;
+    text-decoration: none;
 }
 
 #profileContainer {
@@ -31,9 +32,9 @@
 #profileLabel {
     margin: .5em;
     font-size: 32px;
+    text-decoration: none;
 }
 
 #profileLabel:hover {
-    text-decoration: underline;
     cursor: pointer;
 }

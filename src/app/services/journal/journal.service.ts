@@ -136,6 +136,7 @@ export class JournalService {
     this.currentTopicColor = topicColor;
     //if switching topics, current journal is unselected
     this.currentJournalTitle = "";
+    this.currentJournalSubtitle = "";
     this.topicSource.next(topicId);
     this.topicColorSource.next(topicColor);
   }

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { JournalComponent } from './components/journal/journal.component';
 import { LoginComponent } from './components/login/login.component';
+import { ProfileComponent } from './components/profile/profile.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { VerifyComponent } from './components/verify/verify.component';
 
@@ -12,7 +13,8 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'journal', component: JournalComponent},
-  {path: 'verify/:userid/:verificationCode', component: VerifyComponent}
+  {path: 'verify/:userid/:verificationCode', component: VerifyComponent},
+  {path: 'profile', component: ProfileComponent}
 ];
 
 @NgModule({

@@ -1,6 +1,6 @@
 <app-journal-header></app-journal-header>
 <div id="breadcrumbContainer" style="width: 100%; display:inline-flex;" *ngIf="journalService.getCurrentTopic() != null;" [style.background-color] = "journalColor">
-    <h2 style="font-family: monospace; margin-left: 1em; color : #e7f4dd;">{{journalService.getCurrentTopicName()}} 
+    <h2 style="font-family: monospace; margin-left: 2.5em; color : #e7f4dd;">{{journalService.getCurrentTopicName()}} 
         <span *ngIf="journalService.getCurrentJournalTitle() != ''"> > {{journalService.getCurrentJournalTitle()}}  
         </span>
         <span id="journalTitlePlaceholder" *ngIf="journalService.getCurrentJournalSubtitle() != ''">

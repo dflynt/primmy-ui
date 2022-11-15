@@ -63,9 +63,8 @@ hr {
   margin: 0 auto;
   background-color: #57CC99;
   color: #DDF4EA;
-  border: 1px solid #57CC99;
+  border-top: 1px solid black;
 }
-
 
 #secondSection {
   margin-top: 20em;
@@ -74,8 +73,7 @@ hr {
   margin: 0 auto;
   background-color: white;
   color: black;
-  border: 1px solid black;
-
+  border-top: 1px solid black;
 }
 
 #thirdSection {
@@ -85,10 +83,8 @@ hr {
   margin: 0 auto;
   background-color: #57CC99;
   color: #DDF4EA;
-  border: 1px solid #57CC99;
+  border-top: 1px solid black;
 }
-
-
 
 .typing-demo {
   width: 12ch;

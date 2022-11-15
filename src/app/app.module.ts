@@ -32,6 +32,7 @@ import { VerifyComponent } from './components/verify/verify.component';
 import { CookieService } from 'ngx-cookie-service';
 import {Interceptor} from './interceptors/interceptor';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { ProfileComponent } from './components/profile/profile.component';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     JournalentriesComponent,
     FiguresComponent,
     JournalHeaderComponent,
-    VerifyComponent
+    VerifyComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
