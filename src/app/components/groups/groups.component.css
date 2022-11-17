@@ -1,9 +1,55 @@
 #groupsContainer {
     width: 40em;
-    height: 43em;
+    height: 90vh;
     background-color: #57CC99;
     color: white;
     float: left;
     font-family: monospace;
-    padding-left: 2m;
+    border-radius: 4px;
+    border: 2px solid black;
+}
+
+
+#noGroupsContainer {
+    text-align: center;
+    font-size: 18px;
+}
+
+.group {
+    float: left;
+}
+
+.groupName {
+    margin-right: 1em;
+}
+
+.leaderName {
+    margin-right: 1em;
+}
+
+.groupButton {
+    width: 110px;
+    height: 3em;
+    font-family: monospace;
+    background-color:  #57CC99;
+    color: white;
+    border-radius: 10px;
+    border-color: white;
+}
+
+#joinGroupButton {
+    width: 185px;
+    height: 3em;
+    font-family: monospace;
+    background-color:  #DDF4EA;
+    color: black;
+    border-radius: 10px;
+    border-color: black;
+    margin-left: 33%;
+}
+
+#joinGroupButton:hover {
+    background-color: #57CC99;
+    border-color: white;
+    cursor: pointer;
 }

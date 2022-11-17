@@ -34,7 +34,7 @@ import {Interceptor} from './interceptors/interceptor';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ProfileComponent } from './components/profile/profile.component';
 import { GroupsComponent } from './components/groups/groups.component';
-
+import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +50,8 @@ import { GroupsComponent } from './components/groups/groups.component';
     JournalHeaderComponent,
     VerifyComponent,
     ProfileComponent,
-    GroupsComponent
+    GroupsComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,

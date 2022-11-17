@@ -1,3 +1,15 @@
-    <div id="groupsContainer" style="margin-left: 27%;">
-        <h1 style="text-align:center;">Groups</h1>
+<div id="groupsContainer" style="margin-left: 27%;">
+    <h1 style="text-align:center;">Groups</h1>
+    <div id="noGroupsContainer" *ngIf="getGroupsLength() == 0">
+        <p>You're not in any groups...</p>
     </div>
+    <div id="groupContainer">
+        <div class="group" *ngFor="let group of groups; let i = index">
+            <h3 class="groupName">{{group.groupName}}</h3>
+            <p class="leaderName">{{group.leaderName}}</p>
+            <button class="groupButton" (click)="redirectToGroupEntries()">View Group Entries</button>
+        </div>
+    </div>
+
+    <button id="joinGroupButton" (click)="showJoinGroupModal()">Join Group</button>
+</div>

@@ -1,107 +1,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<div id="mainContainer" style="margin-left: 27%;">
-    <div id="profileContainer">
-        <h1 style="text-align:center;">Edit Profile</h1>
-        <table>
-            <tr>
-                <td class="editFormLabel">
-                    First Name:
-                </td>
-                <td class="editFormInput">
-                    <p class="editFormValue" *ngIf="!editFirstNameInputEnabled; else displayFirstNameInput;">{{userService.getCurrentUser().firstName || 'N/A'}}</p>
-                    <ng-template #displayFirstNameInput>
-                        <input type="text" class="editFormInput" [(ngModel)]="editedFirstName"> 
-                    </ng-template>
-                </td>
-                <td>                
-                    <img class="editIcon" *ngIf="!editFirstNameInputEnabled; else displayFirstNameEditButtons;" (click)="showFirstNameInput()" src="../../../assets/images/editIcon.png"/>
-                    <ng-template #displayFirstNameEditButtons>
-                        <img class="editIcon" (click)="saveUpdatedFirstName();" src="../../../assets/images/greenCheckMark.png"/>
-                        <img class="editIcon" (click)="closeFirstNameInput()"src="../../../assets/images/redXMark.png"/>
-                    </ng-template>
-                </td>
-            </tr>
-            <tr>
-                <td class="editFormLabel">
-                    Last Name:
-                </td>
-                <td class="editFormInput">
-                    <p class="editFormValue" *ngIf="!editLastNameInputEnabled; else displayLastNameInput;">{{userService.getCurrentUser().lastName || 'N/A'}}</p>
-                    <ng-template #displayLastNameInput>
-                        <input type="text" class="editFormInput" [(ngModel)]="editedLastName"> 
-                    </ng-template>
-                </td>
-                <td>                
-                    <img class="editIcon" *ngIf="!editLastNameInputEnabled; else displayLastNameEditButtons;" (click)="showLastNameInput()" src="../../../assets/images/editIcon.png"/>
-                    <ng-template #displayLastNameEditButtons>
-                        <div >
-                            <img class="editIcon" (click)="saveUpdatedLastName();" src="../../../assets/images/greenCheckMark.png"/>
-                            <img class="editIcon" (click)="closeLastNameInput()" src="../../../assets/images/redXMark.png"/>
-                        </div>
-                    </ng-template>
-                </td>
-            </tr>
-            <tr>
-                <td class="editFormLabel">
-                    Institution:
-                </td>
-                <td class="editFormInput">
-                    <p class="editFormValue" *ngIf="!editInstitutionInputEnabled; else displayInstitutionInput;">{{userService.getCurrentUser().institution || 'N/A'}}</p>
-                    <ng-template #displayInstitutionInput>
-                        <input type="text" class="editFormInput" [(ngModel)]="editedInstitution"> 
-                    </ng-template>
-                </td>
-                <td>                
-                    <img class="editIcon" *ngIf="!editInstitutionInputEnabled; else displayInstitutionEditButtons;" (click)="showInstitutionInput()" src="../../../assets/images/editIcon.png"/>
-                    <ng-template #displayInstitutionEditButtons>
-                        <div >
-                            <img class="editIcon" (click)="saveUpdatedInstitutionName();" src="../../../assets/images/greenCheckMark.png"/>
-                            <img class="editIcon" (click)="closeInstitutionInput()" src="../../../assets/images/redXMark.png"/>
-                        </div>
-                    </ng-template>
-                </td>
-            </tr>
-            <tr>
-                <td class="editFormLabel">
-                    Field:
-                </td>
-                <td class="editFormInput">
-                    <p class="editFormValue" *ngIf="!editFieldInputEnabled; else displayFieldInput;">{{userService.getCurrentUser().field || 'N/A'}}</p>
-                    <ng-template #displayFieldInput>
-                        <input type="text" class="editFormInput" [(ngModel)]="editedField"> 
-                    </ng-template>
-                </td>
-                <td>                
-                    <img class="editIcon" *ngIf="!editFieldInputEnabled; else displayFieldEditButtons;" (click)="showFieldInput()" src="../../../assets/images/editIcon.png"/>
-                    <ng-template #displayFieldEditButtons>
-                        <div >
-                            <img class="editIcon" (click)="saveUpdatedFieldName();" src="../../../assets/images/greenCheckMark.png"/>
-                            <img class="editIcon" (click)="closeFieldInput()" src="../../../assets/images/redXMark.png"/>
-                        </div>
-                    </ng-template>
-                </td>
-            </tr>
-            <tr>
-                <td class="editFormLabel">
-                    Focus:
-                </td>
-                <td class="editFormInput">
-                    <p class="editFormValue" *ngIf="!editFocusInputEnabled; else displayFocusInput;">{{userService.getCurrentUser().focus || 'N/A'}}</p>
-                    <ng-template #displayFocusInput>
-                        <input type="text" class="editFormInput" [(ngModel)]="editedFocus"> 
-                    </ng-template>
-                </td>
-                <td>                
-                    <img class="editIcon" *ngIf="!editFocusInputEnabled; else displayFocusEditButtons;" (click)="showFocusInput()" src="../../../assets/images/editIcon.png"/>
-                    <ng-template #displayFocusEditButtons>
-                        <div >
-                            <img class="editIcon" (click)="saveUpdatedFocusName();" src="../../../assets/images/greenCheckMark.png"/>
-                            <img class="editIcon" (click)="closeFocusInput()" src="../../../assets/images/redXMark.png"/>
-                        </div>
-                    </ng-template>
-                </td>
-            </tr>
-        </table>
-    </div>
+<div id="profileGroupTabContainer">
+    <button id="editProfileBtn" [ngClass]="{'activeTab': editProfileTabIsVisible}" (click)="showEditProfileTab()">Profile</button>
+    <button id="groupsBtn" [ngClass]="{'activeTab': groupsTabIsVisible}" (click)="showGroupsTab()">Groups</button>
 </div>
+<app-edit-profile *ngIf="editProfileTabIsVisible; else groupContainerBlock"></app-edit-profile>
+<ng-template #groupContainerBlock>
+        <app-groups></app-groups>
+</ng-template>
+

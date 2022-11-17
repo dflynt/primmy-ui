@@ -1,49 +1,49 @@
-#profileContainer {
-    width: 40em;
-    height: 43em;
+#editProfileContainer {
+
+}
+
+#groupsContainer {
+
+}
+
+#editProfileBtn {
+    width: 10em;
+    height: 3em;
+    background-color: #DDF4EA;
+    color: black;
+    font-family: monospace;
+    border-top: 0px;
+    border-radius: 5px;
+    margin-bottom: 1px;
+}
+
+#editProfileBtn.activeTab {
     background-color: #57CC99;
     color: white;
-    float: left;
+}
+
+#groupsBtn {
+    width: 10em;
+    height: 3em;
+    background-color: #DDF4EA;
+    color: black;
     font-family: monospace;
-    padding-left: 2m;
+    border-top: 0px;
+    border-radius: 5px;
 }
 
-table {
-    border-spacing: 2em;
-    border-collapse: separate;
-    table-layout: fixed;
-    width: 100%;
+#groupsBtn.activeTab {
+    background-color: #57CC99;
+    color: white;
 }
 
-.editFormLabel {
-    font-weight: bold;
-    font-size: 20px;
-    margin-top: 16px;
-    text-align: left;
+#profileGroupTabContainer {
+    margin-left: 30%;
+    margin-top: 1em;
 }
 
-.editFormValue {
-    font-size: 16px;
-    margin-top: 16px;
-    margin-left: 5em;
-}
-
-.editFormInput {
-    height: 35px;
-    width: 15em;
-    margin-top: 16px;
-}
-
-.editIcon {
-    width: 25px;
-    height: 25px;
-    float: left;
-    display: flex;
-    margin-right: .5em;
-    margin-top: 5px;
-    margin-left: 1em;
-}
-
-.editIcon:hover {
+#profileGroupTabContainer button:hover {
     cursor: pointer;
+    border-color: white;
+    background-color: #57CC99;
 }

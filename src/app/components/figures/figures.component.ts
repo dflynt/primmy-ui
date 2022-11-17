@@ -222,6 +222,7 @@ export class FiguresComponent implements OnInit {
         const deletedFigure = this.figures.splice(this.selectedFigureIndex, 1);
         this.displayFigureViewer = false;
         this.displayLoadingFigureIcon = false;
+        this.selectedExcelTabIndex = 0;
       },
       error => {
         this.displayFigureViewer = false;
