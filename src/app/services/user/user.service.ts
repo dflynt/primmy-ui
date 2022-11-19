@@ -42,6 +42,14 @@ export class UserService {
                           this.userPortNumber, null, null);
   }
 
+  submitNewError(errorText: string): Observable<any> {
+    return this.rest.post("/user/" + this.currentUser.userid + "/submitError", this.userPortNumber, errorText, this.authToken);
+  }
+
+  submitFeatureSuggestion(feedback: string): Observable<any> {
+    return this.rest.post("/user/" + this.currentUser.userid + "/submitFeedback", this.userPortNumber, feedback, this.authToken);
+  }
+
   setCurrentUser(user: User) {
     this.currentUser = user;
   }

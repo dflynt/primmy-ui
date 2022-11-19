@@ -26,6 +26,10 @@ export class EditProfileComponent implements OnInit {
 
   displaySubmitErrorModal: boolean = false;
   displaySuggestionModal: boolean = false;
+  displayFeedbackLoadingIcon: boolean = false;
+
+  errorSubmissionText: string = "";
+  featureRequestText: string = "";
 
   constructor(formBuilder: FormBuilder, userService: UserService) {
     this.userService = userService;
@@ -48,11 +52,36 @@ export class EditProfileComponent implements OnInit {
   }
 
   attemptErrorSubmission(): void {
-
+    console.log("Submitting error text: " + this.errorSubmissionText);
+    this.displayFeedbackLoadingIcon = true;
+    this.userService.submitNewError(this.errorSubmissionText).subscribe(
+      result => {
+        this.errorSubmissionText = "";
+        this.displayFeedbackLoadingIcon = false;
+        this.closeSubmitErrorModal();
+      },
+      error => {
+        this.displayFeedbackLoadingIcon = false;
+        this.closeSubmitErrorModal();
+      }
+    );
   }
 
   attemptSuggestionSubmission(): void {
-
+    console.log("Submitting new feature text: " + this.featureRequestText);
+    this.displayFeedbackLoadingIcon = true;
+    this.userService.submitFeatureSuggestion(this.featureRequestText).subscribe(
+      result => {
+        this.featureRequestText = "";
+        this.displayFeedbackLoadingIcon = false;
+        this.closeSuggestionModal();
+      },
+      error => {
+        this.featureRequestText = "";
+        this.displayFeedbackLoadingIcon = false;
+        this.closeSuggestionModal();
+      }
+    )
   }
 
   showSubmitErrorModal(): void {

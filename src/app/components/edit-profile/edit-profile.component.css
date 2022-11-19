@@ -5,7 +5,6 @@
     color: white;
     float: left;
     font-family: monospace;
-    padding-left: 2m;
     border-radius: 4px;
     border: 2px solid black;
 }
@@ -83,4 +82,17 @@ table {
     background-color: #57CC99;
     color: white;
     cursor: pointer;
+}
+
+.feedBackTextArea {
+    width: 35em;
+    height: 10em;
+    margin-bottom: 2em;
+}
+
+.feedbackLoadingIcon {
+    width: 35px;
+    height: 35px;
+    margin-left: 45%;
+    position: absolute;
 }

@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
         this.sectionTwoDisplayed = true;
       }
      }
-     if(window.pageYOffset >= 1200) {
+     if(window.pageYOffset >= 1250) {
       if(!this.sectionThreeDisplayed) {
         this.sectionThreeDisplayed = true;
       }
