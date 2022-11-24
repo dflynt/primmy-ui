@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { Figure } from 'src/app/models/Figure';
 import { JournalService } from 'src/app/services/journal/journal.service';
 import { RestService } from 'src/app/services/rest/rest.service';
@@ -7,6 +7,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, ReplaySubject } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 import * as XLSX from 'xlsx';
+
 
 @Component({
   selector: 'app-figures',
@@ -29,6 +30,10 @@ export class FiguresComponent implements OnInit {
   imageZoom: number = 100;
   imageZoomText: string = '100%';
   excelData: any;
+  currentExcelSheet: any;
+  viewableExcelData: any = [];
+  currSheetWindowIndex: number = 0;
+  excelScrollBoundary: number = 0;
   excelWorkbook: any;
   selectedExcelTabIndex: number = 0;
   excelSheets: Map<string, XLSX.WorkSheet> = new Map<string, XLSX.WorkSheet>();
@@ -126,13 +131,13 @@ export class FiguresComponent implements OnInit {
   }
 
   setSelectedFigureIndex(index: number) {
+    this.displayLoadingFigureIcon = true;
     if(this.selectedFigureIndex != index) {
       this.selectedExcelTabIndex = 0;
     }
     this.selectedFigureIndex = index;
     this.displayFigureViewer = true;
     console.log("this.displayFigureViewer: " + this.displayFigureViewer);
-    this.displayLoadingFigureIcon = true;
     let documentRegex = /doc|docx|txt|text/;
     let imageRegex = /jpg|gif|tiff|png/;
     let spreadsheetRegex = /xlx|xlsx/;
@@ -191,21 +196,49 @@ export class FiguresComponent implements OnInit {
       const ws: XLSX.WorkSheet = this.excelWorkbook.Sheets[wsname];
 
       /* save data */
-      this.excelData = this.excelSheetsJSON.get(wsname);
+      this.currentExcelSheet = this.excelSheetsJSON.get(wsname);
+      this.setViewableExcelData(this.currentExcelSheet);
     }
 
     this.displayLoadingFigureIcon = false;
   }
 
-  setSelectedExcelSheetIndex(index: number): void {
-    this.displayLoadingFigureIcon = true;
+  setSelectedExcelSheetIndex(index: number): any {
+    this.enableLoadingIcon();
     this.selectedExcelTabIndex = index;
     
     let sheetName = this.excelWorkbook.SheetNames[index];
     //let data = XLSX.utils.sheet_to_json(this.excelWorkbook.Sheets[sheetName], {header: 1});
-    this.excelData =  this.excelSheetsJSON.get(sheetName);
-    this.displayLoadingFigureIcon = false;
-    
+    //this.excelData =  this.excelSheetsJSON.get(sheetName);
+    this.setViewableExcelData(this.excelSheetsJSON.get(sheetName));
+    this.disableloadingIcon();
+  }
+
+  setViewableExcelData(sheetData: any): void {
+    this.currSheetWindowIndex = 0;
+    this.viewableExcelData = [];
+    let newMaxWindow = this.currSheetWindowIndex + 100;
+    while(this.currSheetWindowIndex < newMaxWindow && this.currSheetWindowIndex < sheetData.length) {
+      this.viewableExcelData.push(sheetData[this.currSheetWindowIndex]);
+      this.currSheetWindowIndex++;
+    }
+
+    //reset view
+    document.getElementById("excelSheetTableBody")?.scrollTo(0,0);
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  infiniteScrollLoadExcelData(event: any) {
+    console.log(event);
+    if(event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight) { 
+      let newMaxWindow = this.currSheetWindowIndex + 100;
+      while(this.currSheetWindowIndex < newMaxWindow && this.currSheetWindowIndex < this.currentExcelSheet.length) {
+        this.viewableExcelData.push(this.currentExcelSheet[this.currSheetWindowIndex]);
+        this.currSheetWindowIndex++;
+      }
+      
+    }
+    console.log("scrolling: " + event.srcElement.scrollTop);
   }
 
   closeFigureViewer(): void {
@@ -213,7 +246,7 @@ export class FiguresComponent implements OnInit {
   }
 
   deleteFigure(): void {
-    this.displayLoadingFigureIcon = true;
+    this.enableLoadingIcon();
     //splice works as get element at selectedFigureIndex, remove 1
     let figureId: string = this.figures[this.selectedFigureIndex].figureId;
     let authToken = this.userService.getCurrentUser()['authToken'];
@@ -221,7 +254,7 @@ export class FiguresComponent implements OnInit {
       result => {
         const deletedFigure = this.figures.splice(this.selectedFigureIndex, 1);
         this.displayFigureViewer = false;
-        this.displayLoadingFigureIcon = false;
+        this.disableloadingIcon();
         this.selectedExcelTabIndex = 0;
       },
       error => {
@@ -229,6 +262,17 @@ export class FiguresComponent implements OnInit {
         this.displayLoadingFigureIcon = false;
       }
     );
+  }
+
+  enableLoadingIcon() {
+    console.log("Enabling icon");
+    this.displayLoadingFigureIcon = true;
+  }
+
+  disableloadingIcon(): any {
+    console.log("Disabling icon");
+    this.displayLoadingFigureIcon = false;
+    return;
   }
 
   showNewFigureModal(): void {

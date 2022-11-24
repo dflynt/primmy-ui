@@ -47,10 +47,10 @@
 
         <div class="figureContainer" *ngIf="displaySpreadsheetFile && !displayLoadingFigureIcon">
             <h2 >{{figures[selectedFigureIndex]?.fileName}}.{{figures[selectedFigureIndex]?.fileType}}</h2>
-            <div style="width: 1000px; height: 600px; margin: 0 auto; border: 1px solid;">
+            <div style="width: 1000px; height: 600px; margin: 0 auto; border: 1px solid;" >
                 <table id="excelFigure">
-                    <tbody>
-                        <tr *ngFor="let row of excelData">
+                    <tbody id="excelSheetTableBody" (scroll) = "infiniteScrollLoadExcelData($event)">
+                        <tr *ngFor="let row of viewableExcelData">
                             <td *ngFor="let val of row">
                                 {{val}}
                             </td>
@@ -91,13 +91,15 @@
     </div>
     <br>
     <br>
-    <div *ngIf="displayLoadingFigureIcon">
+<!--   <div *ngIf="displayLoadingFigureIcon">
         <img src="../../../assets/images/loading.gif" style="margin-left: 50%;"/>
         <br>
         <p style="margin-left: 47%; font-family: monospace;">Deleting Figure...</p>
         <br>
     </div>
+-->
     <ng-template pTemplate="footer">
+        <img *ngIf="displayLoadingFigureIcon == true" src="../../../assets/images/loading.gif" style="margin-left: 47%;"/>
         <button class = "figureViewerBtn" (click)="closeFigureViewer()">Close</button>
         <button class = "figureViewerBtn" (click)="deleteFigure()">Delete Figure</button>
     </ng-template>
