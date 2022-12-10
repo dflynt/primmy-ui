@@ -35,6 +35,8 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ProfileComponent } from './components/profile/profile.component';
 import { GroupsComponent } from './components/groups/groups.component';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
+import { PasswordResetComponent } from './components/password-reset/password-reset.component';
+import { NewPasswordInputComponent } from './components/new-password-input/new-password-input.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import { EditProfileComponent } from './components/edit-profile/edit-profile.com
     VerifyComponent,
     ProfileComponent,
     GroupsComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    PasswordResetComponent,
+    NewPasswordInputComponent
   ],
   imports: [
     BrowserModule,

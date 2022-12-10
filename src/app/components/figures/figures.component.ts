@@ -235,10 +235,8 @@ export class FiguresComponent implements OnInit {
       while(this.currSheetWindowIndex < newMaxWindow && this.currSheetWindowIndex < this.currentExcelSheet.length) {
         this.viewableExcelData.push(this.currentExcelSheet[this.currSheetWindowIndex]);
         this.currSheetWindowIndex++;
-      }
-      
+      } 
     }
-    console.log("scrolling: " + event.srcElement.scrollTop);
   }
 
   closeFigureViewer(): void {

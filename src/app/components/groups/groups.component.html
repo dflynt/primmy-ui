@@ -11,5 +11,28 @@
         </div>
     </div>
 
-    <button id="joinGroupButton" (click)="showJoinGroupModal()">Join Group</button>
+    <div>
+        <button class="groupFunctionButtons" id="createGroupButton" (click)="showCreateGroupModal()">Create Group</button>
+        <button class="groupFunctionButtons" id="joinGroupButton" (click)="showJoinGroupModal()">Join Group</button>
+    </div>
 </div>
+<p-dialog class = "modalPopup" header="Create a New Group" 
+            [(visible)]="displayCreateGroupModal" [modal]="true" 
+            [style]="{width: '20vw', 'font-family': 'monospace', 'margin-left': '7px'}"
+            [draggable]="false" [resizable]="false">
+    <div>
+        <p style="font-size: 18px;">Groups allow you to view shared entries created by other users. Once you've created a new group, 
+                                    share the group code with anyone and they can join.</p>
+        <label for="groupName" style="font-weight:bold;">New Group Name </label>
+        <input id="groupNameInput" name="groupName" type="text" [(ngModel)]="newGroupNameInput"/>
+        <br>  
+        <p style="font-size: 18px;"><b>Are you sure you want to create a new group?</b></p>
+        <img class="groupLoadingIcon" *ngIf="displayGroupLoadingIcon" src="../../../assets/images/loading.gif"/>
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button class="figureModalBtn" (click)="createNewGroup()">Confirm</button>
+        <button class="figureModalBtn" (click)="closeCreateGroupModal()">Exit</button>
+    </ng-template>
+</p-dialog>
+

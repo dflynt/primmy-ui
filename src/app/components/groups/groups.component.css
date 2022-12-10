@@ -37,7 +37,7 @@
     border-color: white;
 }
 
-#joinGroupButton {
+.groupFunctionButtons {
     width: 185px;
     height: 3em;
     font-family: monospace;
@@ -45,11 +45,35 @@
     color: black;
     border-radius: 10px;
     border-color: black;
-    margin-left: 33%;
+    float: left;
+    margin-left: 10%;
 }
 
-#joinGroupButton:hover {
+.groupLoadingIcon {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    z-index: 2;
+    margin-left: 45%;
+}
+
+.groupFunctionButtons:hover {
     background-color: #57CC99;
     border-color: white;
+    cursor: pointer;
+}
+
+.figureModalBtn {
+    width: 5em;
+    height: 3em;
+    font-family: monospace;
+    background-color:  #57CC99;
+    color: white;
+    border-radius: 8px;
+    border-color: white;
+  }
+
+.figureModalBtn:hover {
+    border-color: black;
     cursor: pointer;
 }

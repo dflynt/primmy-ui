@@ -15,7 +15,7 @@ export class UserService {
   authToken: string;
   refreshToken: string;
   currentUser: User
-  constructor(private rest: RestService, private  cookies: CookieService) {}
+  constructor(private rest: RestService, private cookies: CookieService) {}
 
   attemptLogin(email: any, password: any): Observable<any> {
     let body = {email: email, password: password};
@@ -36,7 +36,20 @@ export class UserService {
     return this.rest.post("/user", this.userPortNumber, body, "");
   }
 
-  
+  requestNewPassword(email: any): Observable<any> {
+     return this.rest.post("/requestNewPassword/email/" + email, this.userPortNumber, null, "")
+  }
+
+  resetPassword(userId: string, newPassword: string): Observable<any> {
+    return this.rest.put("/setNewPassword/user/" + userId, this.userPortNumber, newPassword, "");
+  }
+
+  queryForUser(userId: string): Observable<any> {
+    let response = this.rest.get("/queryForUser/user/" + userId, this.userPortNumber, null, "");
+    console.log(response);
+    return response;
+  }
+
   enableUser(userId: String, verificationCode: String): Observable<any> {
     return this.rest.put("/verify/" + userId + "/verificationCode/" + verificationCode, 
                           this.userPortNumber, null, null);

@@ -1,4 +1,6 @@
-
+#primmy:hover {
+  cursor:default;
+}
 
 #tagLineContainer {
     margin-left: auto;
