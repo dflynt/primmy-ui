@@ -53,6 +53,7 @@ export class LoginComponent implements OnInit {
     let password: any = this.loginForm.get('password')?.value;
     this.userService.attemptLogin(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value).subscribe( 
       result => {
+        this.setCookies();
         let user: User = result;
         this.userService.setCurrentUser(user);
         this.errormessagetextcolor = "white";
@@ -60,6 +61,7 @@ export class LoginComponent implements OnInit {
         this.userService.setCookie("primmyAuthToken", user.authToken);
         this.userService.setCookie("primmyPassword", password);
         this.userService.setCookie("primmyRefreshToken", user.refreshToken);
+        this.userService.setCookie("primmyFirstName", user.firstName);
         this.loginLoading = false;
         this.router.navigateByUrl("/journal");
         console.log("success");
@@ -68,5 +70,9 @@ export class LoginComponent implements OnInit {
         this.loginLoading = false;
         this.errormessagetextcolor = "red";
       })
+  }
+
+  setCookies(): void {
+
   }
 }

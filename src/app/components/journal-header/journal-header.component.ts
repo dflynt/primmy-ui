@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from 'src/app/models/User';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-journal-header',
@@ -7,9 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class JournalHeaderComponent implements OnInit {
 
-  constructor() { }
+  userService: UserService;
+  user: User;
+  userName: string;
+
+  constructor(userService: UserService) { 
+    this.userService = userService;
+  }
 
   ngOnInit(): void {
+    let cookies = this.userService.getCookies();
+    this.userName = cookies['primmyFirstName'];
   }
 
 }

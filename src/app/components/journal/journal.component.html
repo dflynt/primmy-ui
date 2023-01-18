@@ -1,6 +1,6 @@
 <app-journal-header></app-journal-header>
-<div id="breadcrumbContainer" style="width: 100%; display:inline-flex;" *ngIf="journalService.getCurrentTopic() != null;" [style.background-color] = "journalColor">
-    <h2 style="font-family: monospace; margin-left: 2.5em; color : #e7f4dd;">{{journalService.getCurrentTopicName()}} 
+<div id="breadcrumbContainer" style="width: 100%; display:inline-flex;" *ngIf="journalService.getCurrentWorkbook() != null;" [style.background-color] = "journalColor">
+    <h2 style="font-family: monospace; margin-left: 2.5em; color : #e7f4dd;">{{journalService.getCurrentWorkbookName()}} 
         <span *ngIf="journalService.getCurrentJournalTitle() != ''"> > {{journalService.getCurrentJournalTitle()}}  
         </span>
         <span id="journalTitlePlaceholder" *ngIf="journalService.getCurrentJournalSubtitle() != ''">
@@ -12,10 +12,10 @@
 
 <div style="display: flex" *ngIf="!loadingIcon; else elseBlock">
     <div >
-        <button id="createJournalBtn" class="journalCRUDBtn" (click)="showNewJournalModal()">Create</button>
-        <button class="journalCRUDBtn" (click)="saveJournalText()">Save</button>
-        <button class="journalCRUDBtn" (click)="showEditJournalModal()">Edit</button>
-        <button id="deleteJournalBtn" class="journalCRUDBtn" (click)="showDeleteJournalModal()">Delete</button>
+        <button id="createJournalBtn" [className]="enableCreateJournalButton ? 'disabledButton' : 'enabledButton'" (click)="showNewJournalModal()">Create</button>
+        <button [className]="currentJournal == null ? 'disabledButton' : 'enabledButton'" (click)="saveJournalText()">Save</button>
+        <button [className]="currentJournal == null ? 'disabledButton' : 'enabledButton'" (click)="showEditJournalModal()">Edit</button>
+        <button id="deleteJournalBtn" [className]="currentJournal == null ? 'disabledButton' : 'enabledButton'" (click)="showDeleteJournalModal()">Delete</button>
         <app-journalentries id="fixedEntries"></app-journalentries>
     </div>
     <editor id="editor"

@@ -13,6 +13,10 @@
     text-decoration: none;
 }
 
+#imageLink:visited {
+    color: black;
+}
+
 #profileContainer {
     float: right;
     display:inline-flex;
@@ -33,6 +37,10 @@
     margin: .5em;
     font-size: 32px;
     text-decoration: none;
+}
+
+#profileLabel:visited {
+    color: black;
 }
 
 #profileLabel:hover {

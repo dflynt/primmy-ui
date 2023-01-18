@@ -37,22 +37,31 @@ export class JournalComponent implements OnInit {
 
   editedJournalTitle: string = "";
   editedJournalSubtitle: string = "";
+
+  enableCreateJournalButton: boolean = false;
   
   constructor(journalService: JournalService, router: Router, userService: UserService) {
     this.journalService = journalService;
+
+    if(this.journalService.getCurrentWorkbook() == null || this.journalService.getCurrentWorkbook().length == 0) {
+      this.enableCreateJournalButton = false;
+    }
+    else {
+      this.enableCreateJournalButton = true;
+    }
+    
     this.router = router;
     this.userService = userService;
     this.journalService.journalChange.subscribe((journalId: string) => {
       this.retrieveCurrentJournalData(journalId);      
     })
 
-    this.journalService.topicColorchange.subscribe((topicColor: string) => {
-      this.journalColor = topicColor;
+    this.journalService.workbookColorchange.subscribe((workbookColor: string) => {
+      this.journalColor = workbookColor;
     })
   }
 
   ngOnInit(): void {
-    
     if(this.userService.getCurrentUser() == null) {
       this.loadingIcon = true;
       let cookies = this.userService.getCookies();
@@ -72,6 +81,7 @@ export class JournalComponent implements OnInit {
             this.userService.setCookie("primmyAuthToken", user.authToken);
             this.userService.setCookie("primmyPassword", password);
             this.userService.setCookie("primmyRefreshToken", user.refreshToken);
+            this.userService.setCookie("primmyFirstName", user.firstName);
             this.loadingIcon = false;
           },
           error => {
@@ -130,7 +140,7 @@ export class JournalComponent implements OnInit {
       id: "",
       journalId: "",
       userId: userId,
-      topicId: this.journalService.getCurrentTopic(),
+      topicId: this.journalService.getCurrentWorkbook(),
       title: this.newJournalTitle,
       subTitle: this.newJournalSubTitle,
       entry: "",
@@ -145,7 +155,7 @@ export class JournalComponent implements OnInit {
 
     this.journalService.createNewJournal(journal, authToken).subscribe(
       result => {
-        this.journalService.getJournalPreviewsByUserIdAndTopicId(userId,this.journalService.getCurrentTopic(), authToken).subscribe(
+        this.journalService.getJournalPreviewsByUserIdAndTopicId(userId,this.journalService.getCurrentWorkbook(), authToken).subscribe(
           result => {
             this.journalService.displayRetrievedPreviews(result);
             this.closeNewJournalModal();
@@ -162,6 +172,9 @@ export class JournalComponent implements OnInit {
   }
 
   saveJournalText() {
+    if(this.currentJournal == null) {
+      return;
+    }
     //Set current journal to make it available
     this.displayJournalSavingMessage = true;
     let authToken = this.userService.getCurrentUser()['authToken'];
@@ -210,6 +223,9 @@ export class JournalComponent implements OnInit {
       result => {
         this.journalService.removeJournalFromEntryList();
         this.text = '';
+        this.currentJournal = null!; 
+        //The null! forces a null. Without it, you will get a compilation error that says 
+        //Type 'null' is not assignable to type 'T'
         this.closeDeleteJournalModal();
       },
       error => {
@@ -225,7 +241,7 @@ export class JournalComponent implements OnInit {
           id: "",
           journalId: "",
           userId: "",
-          topicId: this.journalService.getCurrentTopic(),
+          topicId: this.journalService.getCurrentWorkbook(),
           title: "",
           subTitle: "",
           entry: "",

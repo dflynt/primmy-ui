@@ -81,7 +81,7 @@ export class FiguresComponent implements OnInit {
       }
     });
 
-    this.journalService.topicChange.subscribe((topicId: String) => {
+    this.journalService.workbookChange.subscribe(() => {
       this.retrievingFigures = false;
       this.resetFileUpload();
       this.figures = [];

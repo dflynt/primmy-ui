@@ -27,6 +27,30 @@ button {
     text-align:center;
 }
 
+.enabledButton {
+    width: 58px;
+    height: 3em;
+    font-family: monospace;
+    background-color:  #57CC99;
+    color: white;
+    border-radius: 10px;
+    border-color: white;
+    margin-right: 2px;
+    text-align:center;
+}
+
+.disabledButton {
+    width: 58px;
+    height: 3em;
+    font-family: monospace;
+    background-color:  #DDF4EA;;
+    color: black;
+    border-radius: 10px;
+    border-color: white;
+    margin-right: 2px;
+    text-align:center;
+}
+
 button:hover {
     border-color: black;
 }

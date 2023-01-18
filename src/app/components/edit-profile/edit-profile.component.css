@@ -77,6 +77,24 @@ table {
     border-radius: 10px;
 }
 
+#logoutButton {
+    width: 15em;
+    height: 2em;
+    background-color: #DDF4EA;
+    color: black;
+    font-family: monospace;
+    border-radius: 10px;
+}
+
+#logoutButton:hover {
+    border-color: white;
+    background-color: #ec0b00;
+    color: white;
+    font-family: monospace;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
 .userExperienceButton:hover {
     border-color: white;
     background-color: #57CC99;

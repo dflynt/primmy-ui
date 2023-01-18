@@ -1,10 +1,10 @@
-  import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
 import { Journal } from 'src/app/models/Journal';
 import { JournalPreview } from 'src/app/models/JournalPreview';
-import { Topic } from 'src/app/models/Topic';
+import { Workbook } from 'src/app/models/Workbook';
 import { JournalService } from 'src/app/services/journal/journal.service';
 import { UserService } from 'src/app/services/user/user.service';
  
@@ -21,25 +21,25 @@ export class JournalentriesComponent implements OnInit {
   journalPreviews: JournalPreview[] = [];
   router: Router;
 
-  retrievingTopics: boolean;
+  retrievingWorkbooks: boolean;
   retrievingPreviews: boolean;
   creatingNewTopic: boolean = false;
 
-  topics: Topic[] = [];
-  currentTopicIndex: number;
+  workbooks: Workbook[] = [];
+  currentWorkbookIndex: number;
   currentJournalPreviewIndex: number;
   currentJournalPreview: JournalPreview;
-  currentTopic: Topic;
-  emptyTopicListString: String = "No Topics Created";
+  currentWorkbook: Workbook;
+  emptyTopicListString: String = "No Workbooks Created";
 
-  displayNewTopicModal: boolean = false;
-  displayNewTopicModalLoadingIcon: boolean = false;
+  displayNewWorkbookModal: boolean = false;
+  displayNewWorkbookModalLoadingIcon: boolean = false;
   displayNewJournalModal: boolean = false;
   displayNewJournalModalLoadingIcon: boolean = false;
 
-  newTopicName: string = ""
-  newTopicColor: string = "#57CC99"; //default primmy
-  newTopicClassId: string = "";
+  newWorkbookName: string = ""
+  newWorkbookColor: string = "#57CC99"; //default primmy
+  newWorkbookGroupId: string = "";
   
   newJournalTitle: string = "";
   newJournalSubTitle: string = "";
@@ -52,7 +52,7 @@ export class JournalentriesComponent implements OnInit {
     this.journalService = journalService;
     this.router = router;
     this.userService = userService;
-    this.journalService.topicChange.subscribe((topicId: String) => {
+    this.journalService.workbookChange.subscribe(() => {
       this.currentJournalPreviewIndex = -1;
       let currPreview: JournalPreview = {
         title: "",
@@ -86,14 +86,14 @@ export class JournalentriesComponent implements OnInit {
     let userId = this.userService.getCurrentUser()["userid"];
     let authToken = this.userService.getCurrentUser()["authToken"];
     this.retrievingPreviews = true;
-    this.retrievingTopics = true;
+    this.retrievingWorkbooks = true;
       //TODO If user tries to go to this page immediately, look for cookies and try signing in again
 
-    this.journalService.getTopicsByUserid(userId, authToken).subscribe(
+    this.journalService.getWorkbooksByUserid(userId, authToken).subscribe(
       result => {
         if(result.length != 0) {
-          this.loadRetrievedTopics(result);
-          this.journalService.getJournalPreviewsByUserIdAndTopicId(userId, this.currentTopic.topicId, authToken).subscribe(
+          this.loadRetrievedWorkbooks(result);
+          this.journalService.getJournalPreviewsByUserIdAndTopicId(userId, this.currentWorkbook.workbookId, authToken).subscribe(
             result => {
               this.loadRetrievedPreviews(result)              
             },
@@ -103,7 +103,7 @@ export class JournalentriesComponent implements OnInit {
           )
         }
         else {
-          this.retrievingTopics = false;
+          this.retrievingWorkbooks = false;
           this.retrievingPreviews = false;
         }
         
@@ -114,8 +114,8 @@ export class JournalentriesComponent implements OnInit {
     );
     //TODO set currentTopic equal to last opened topic
     //this can be a setting under Profile to enable or disable
-    this.currentTopic = this.topics[0];
-    this.retrievingTopics = false;
+    this.currentWorkbook = this.workbooks[0];
+    this.retrievingWorkbooks = false;
 
   }
 
@@ -125,23 +125,25 @@ export class JournalentriesComponent implements OnInit {
     this.journalService.setCurrentJournal(this.journalPreviews[index].journalId, this.journalPreviews[index].title, this.journalPreviews[index].subTitle);
   }
 
-  loadRetrievedTopics(result: any) {
-    this.topics = [];
-    result.map((topic:Topic) => {
-      let newTopic: Topic = {
-        topicName: topic.topicName,
-        topicId: topic.topicId,
-        userId: topic.userId,
-        classId: topic.classId,
-        color: topic.color,
-        createdDate: topic.createdDate
+  loadRetrievedWorkbooks(result: any) {
+    console.log(result);
+    this.workbooks = [];
+    result.map((workbook:Workbook) => {
+      let newWorkbook: Workbook = {
+        workbookName: workbook.workbookName,
+        workbookId: workbook.workbookId,
+        userId: workbook.userId,
+        groupId: workbook.groupId,
+        color: workbook.color,
+        createdDate: workbook.createdDate
       }
-     this.topics.push(newTopic) 
+     this.workbooks.push(newWorkbook) 
     })
-    this.currentTopicIndex = 0;
-    this.currentTopic = this.topics[this.currentTopicIndex];
-    this.journalService.setCurrentTopic(this.currentTopic.topicId, this.currentTopic.topicName, this.currentTopic.color);
-    this.retrievingTopics = false;
+    this.currentWorkbookIndex = 0;
+    console.log(this.workbooks);
+    this.currentWorkbook = this.workbooks[this.currentWorkbookIndex];
+    this.journalService.setCurrentWorkbook(this.currentWorkbook.workbookId, this.currentWorkbook.workbookName, this.currentWorkbook.color);
+    this.retrievingWorkbooks = false;
   }
 
   loadRetrievedPreviews(result: any) {
@@ -162,18 +164,18 @@ export class JournalentriesComponent implements OnInit {
     this.retrievingPreviews = false;
   }
 
-  changeTopics(index: number) {
-    if(index == this.currentTopicIndex) {
+  changeWorkbooks(index: number) {
+    if(index == this.currentWorkbookIndex) {
       return;
     }
-    this.currentTopicIndex = index;
+    this.currentWorkbookIndex = index;
     this.retrievingPreviews = true;
-    this.currentTopic = this.topics[index];
-    this.journalService.setCurrentTopic(this.currentTopic.topicId, this.currentTopic.topicName, this.currentTopic.color);
+    this.currentWorkbook = this.workbooks[index];
+    this.journalService.setCurrentWorkbook(this.currentWorkbook.workbookId, this.currentWorkbook.workbookName, this.currentWorkbook.color);
     let userId = this.userService.getCurrentUser()['userid'];
     let authToken = this.userService.getCurrentUser()['authToken'];
 
-    this.journalService.getJournalPreviewsByUserIdAndTopicId(userId, this.currentTopic.topicId, authToken).subscribe(
+    this.journalService.getJournalPreviewsByUserIdAndTopicId(userId, this.currentWorkbook.workbookId, authToken).subscribe(
       result => {
         this.loadRetrievedPreviews(result);
       },
@@ -184,48 +186,48 @@ export class JournalentriesComponent implements OnInit {
     this.retrievingPreviews = false;
   }
 
-  showNewTopicModal() {
-    this.displayNewTopicModal = true;
+  showNewWorkbookModal() {
+    this.displayNewWorkbookModal = true;
   }
 
-  closeNewTopicModal() {
-    this.displayNewTopicModalLoadingIcon = false;
-    this.displayNewTopicModal = false;
-    this.newTopicClassId = "";
-    this.newTopicColor = "";
-    this.newTopicName = "";
+  closeNewWorkbookModal() {
+    this.displayNewWorkbookModalLoadingIcon = false;
+    this.displayNewWorkbookModal = false;
+    this.newWorkbookGroupId = "";
+    this.newWorkbookColor = "";
+    this.newWorkbookName = "";
   }
 
-  createNewTopic() {
+  createNewWorkbook() {
     this.creatingNewTopic = true;
-    this.displayNewTopicModalLoadingIcon = true;
+    this.displayNewWorkbookModalLoadingIcon = true;
     let authToken = this.userService.getCurrentUser()['authToken'];
-    if(this.newTopicClassId.length > 0) {
+    if(this.newWorkbookGroupId.length > 0) {
       // TODO
       //Make API request to check for class with this id
     }
     else {
-      let newTopic: Topic = {
-        topicName: this.newTopicName,
-        topicId: "",
+      let newWorkbook: Workbook = {
+        workbookName: this.newWorkbookName,
+        workbookId: "",
         userId: this.userService.getCurrentUser()["userid"],
-        color: this.newTopicColor,
-        classId: this.newTopicClassId,
+        color: this.newWorkbookColor,
+        groupId: this.newWorkbookGroupId,
         createdDate: new Date()
       };
-      this.journalService.createNewtopic(newTopic, authToken).subscribe(
+      this.journalService.createNewWorkbook(newWorkbook, authToken).subscribe(
         result => {
-          newTopic.topicId = result["topicId"];
-          this.journalService.setCurrentTopic(result["topicId"], result["topicName"], result["color"]);
-          this.topics.push(newTopic);
-          this.currentTopic = newTopic;
+          newWorkbook.workbookId = result["topicId"];
+          this.journalService.setCurrentWorkbook(result["topicId"], result["topicName"], result["color"]);
+          this.workbooks.push(newWorkbook);
+          this.currentWorkbook = newWorkbook;
           this.journalPreviews = [];
         },
         error => {
 
         }
       );
-      this.closeNewTopicModal();
+      this.closeNewWorkbookModal();
     }
   }
 }

@@ -16,6 +16,7 @@ export class GroupsComponent implements OnInit {
   displayCreateGroupModal: boolean = false;
   displayGroupLoadingIcon: boolean = false;
   displayErrorCreatingGroupMessage: boolean = false;
+  displayTooShortGroupNameError: boolean = false;
   userService: UserService;
   groupService: GroupService;
 
@@ -31,6 +32,10 @@ export class GroupsComponent implements OnInit {
   }
 
   createNewGroup(): void {
+    if(this.newGroupNameInput.length < 5) {
+      this.displayTooShortGroupNameError = true;
+      return;
+    }
     let userId = this.userService.getCurrentUser()["userid"];
     let authToken = this.userService.getCurrentUser()["authToken"];
     this.displayGroupLoadingIcon = true;
@@ -38,14 +43,17 @@ export class GroupsComponent implements OnInit {
       result => {
         this.groups.push(result);
         this.displayGroupLoadingIcon = false;
+        this.displayCreateGroupModal = false;
+        this.displayTooShortGroupNameError = false;
       },
       error => {
         this.displayErrorCreatingGroupMessage = true;
         this.displayGroupLoadingIcon = false;
+        this.displayCreateGroupModal = false;
       }
     )
   }
-
+ 
   showCreateGroupModal(): void {
     this.displayCreateGroupModal = true;
   }

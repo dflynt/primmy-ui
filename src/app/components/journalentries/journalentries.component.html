@@ -3,24 +3,24 @@
 <div id="journalPreviewListContainer">
     <div class="journalPreviewContainer">
         <div class="dropdown">
-            <button *ngIf="retrievingTopics">
+            <button *ngIf="retrievingWorkbooks">
                 <img src="../../../assets/images/loading.gif"/>
             </button>
-            <button class="dropbtn" id="newTopicDropdownBtn" *ngIf="!retrievingTopics;">
-                <span *ngIf="topics.length == 0; else showTopics" (click)="showNewTopicModal()">
+            <button class="dropbtn" id="newTopicDropdownBtn" *ngIf="!retrievingWorkbooks;">
+                <span *ngIf="workbooks.length == 0; else showWorkbooks" (click)="showNewWorkbookModal()">
                     Add Workbook
                 </span>
-                <ng-template #showTopics>
+                <ng-template #showWorkbooks>
                     <div style="width: 7em; overflow-x: hidden; text-overflow: ellipsis; text-align: left;">
                         <i class="fa fa-caret-down" style="text-align: left;"></i>
-                        <span style="margin-left: 0em; font-size: 28px;"> {{currentTopic.topicName}}</span>
+                        <span style="margin-left: 0em; font-size: 28px;"> {{currentWorkbook.workbookName}}S</span>
                     </div>
                 </ng-template>
             </button>
             <div class="dropdown-content" >
-                <p class="topic" *ngIf="topics.length != 0" (click)="showNewTopicModal()">Add Workbook</p>
-                <p class="topic" (click)="changeTopics(k);" *ngFor="let topic of topics; let k = index">
-                    {{topic.topicName}}
+                <p class="topic" *ngIf="workbooks.length != 0" (click)="showNewWorkbookModal()">Add Workbook</p>
+                <p class="topic" (click)="changeWorkbooks(k);" *ngFor="let book of workbooks; let k = index">
+                    {{book.workbookName}}
                 </p>
             </div>
         </div>
@@ -40,7 +40,7 @@
                     <span class="preview-title">{{entry.title}} </span>
                 </div>
                 <div class="journalPreviewDateEllipses">
-                    &nbsp;&nbsp;<i>{{entry.createdDate | date : "shortDate"}}</i>
+                    &nbsp;<i>{{entry.createdDate | date : "shortDate"}}</i>
                 </div>
                 <div class="journalPreviewSubTitleEllipsis">
                     <br>
@@ -51,17 +51,17 @@
         
     </div>
 
-    <p-dialog class = "modalPopup" header="Add New Workbook" [(visible)]="displayNewTopicModal" [modal]="true" [style]="{width: '20vw', 'font-family': 'monospace'}"
+    <p-dialog class = "modalPopup" header="Add New Workbook" [(visible)]="displayNewWorkbookModal" [modal]="true" [style]="{width: '20vw', 'font-family': 'monospace'}"
     [draggable]="false" [resizable]="false">
         <p class="m-0 modalPopup" style="text-align:center;">
             <label for="topicName">Workbook Name</label>
             <br>
-            <input id="topicName" type="text"  [(ngModel)]="newTopicName" placeholder="Required">
+            <input id="topicName" type="text"  [(ngModel)]="newWorkbookName" placeholder="Required">
             <br>
             <br>
             <label for="topicName">Color</label>
             <br>
-            <select id="colorDropdown" [(ngModel)] = newTopicColor>
+            <select id="colorDropdown" [(ngModel)] = newWorkbookColor>
                 <option value="#57CC99" style="background:#57CC99; color: white">Green</option>
                 <option value="#cc578a" style="background:#cc578a; color: white;">Red</option>
                 <option value="#578acc" style="background:#578acc; color: white;">Blue</option>
@@ -73,17 +73,17 @@
             <b>OR</b>
             <br>
             <br>
-            <label for="classCode">Have a class code?</label>
+            <label for="classCode">Have a group code?</label>
             <br>
-            <input id="classCode" type="text"  [(ngModel)]="newTopicClassId" placeholder="Optional">
+            <input id="classCode" type="text"  [(ngModel)]="newWorkbookGroupId" placeholder="Optional">
             <br>
             <br>
             <br>
-            <img *ngIf="displayNewTopicModalLoadingIcon" src="../../../assets/images/loading.gif"/>  
+            <img *ngIf="displayNewWorkbookModalLoadingIcon" src="../../../assets/images/loading.gif"/>  
         </p>
         <ng-template pTemplate="footer">
-            <button id="modalCloseBtn" class = "modalPopup" (click)="createNewTopic()">Create</button>
-            <button id="modalCloseBtn" class = "modalPopup" (click)="closeNewTopicModal()">Exit</button>
+            <button id="modalCloseBtn" class = "modalPopup" (click)="createNewWorkbook()">Create</button>
+            <button id="modalCloseBtn" class = "modalPopup" (click)="closeNewWorkbookModal()">Exit</button>
         </ng-template>
     </p-dialog>
 </div>

@@ -2,7 +2,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from "rxjs";
 import { Journal } from 'src/app/models/Journal';
-import { Topic } from 'src/app/models/Topic';
+import { Workbook } from 'src/app/models/Workbook';
 import { RestService } from '../rest/rest.service';
 
 @Injectable({
@@ -16,17 +16,17 @@ export class JournalService {
   private currentJournalTitlePlaceholder: string;
   private currentJournalSubtitle: string;
   private currentJournalSubtitlePlaceholder: string;
-  private currentTopicId: string;
-  private currenttopicName: string;
-  private currentTopicColor: string;
+  private currentWorkbookId: string;
+  private currentWorkbookName: string;
+  private currentWorkbookColor: string;
   messageSource: Subject<String> = new Subject<String>();
   messagesChanges = this.messageSource.asObservable();
 
-  topicSource: Subject<String> = new Subject<String>();
-  topicChange = this.topicSource.asObservable();
+  workbookSource: Subject<String> = new Subject<String>();
+  workbookChange = this.workbookSource.asObservable();
 
-  topicColorSource: Subject<string> = new Subject<string>();
-  topicColorchange = this.topicColorSource.asObservable();
+  workbookColorSource: Subject<string> = new Subject<string>();
+  workbookColorchange = this.workbookColorSource.asObservable();
 
   previewSource: Subject<any[]> = new Subject<any>();
   previewchange = this.previewSource.asObservable();
@@ -39,16 +39,16 @@ export class JournalService {
 
   constructor(private rest: RestService) { }
 
-  getTopicsByUserid(userId: String, authToken: String): Observable<any> {
-    return this.rest.get("/topics/user/" + userId, this.journalPortNumber, null, authToken);
+  getWorkbooksByUserid(userId: String, authToken: String): Observable<any> {
+    return this.rest.get("/workbooks/user/" + userId, this.journalPortNumber, null, authToken);
   }
   
   getJournalPreviewsByUserIdAndTopicId(userId: string, topicId: string, authToken: string): Observable<any>{
-    return this.rest.get("/journal/preview/user/" + userId + "/topic/" + topicId, this.journalPortNumber, null, authToken);
+    return this.rest.get("/journal/preview/user/" + userId + "/workbook/" + topicId, this.journalPortNumber, null, authToken);
   }
 
-  createNewtopic(newTopic: Topic, authToken: string): Observable<any> {
-    return this.rest.post("/topics/createTopic", this.journalPortNumber, newTopic,  authToken);
+  createNewWorkbook(newWorkbook: Workbook, authToken: string): Observable<any> {
+    return this.rest.post("/workbooks/createWorkbook", this.journalPortNumber, newWorkbook, authToken);
   }
 
   getJournalDataByJournalId(userId: string, journalId: string, authToken: string) {
@@ -68,6 +68,7 @@ export class JournalService {
   }
 
   deleteJournal(journalId: string, authToken: string): Observable<any> {
+    console.log("Deleting journalId: " + journalId);
     return this.rest.delete("/journal/" + journalId, this.journalPortNumber, null, authToken);
   }
 
@@ -122,27 +123,27 @@ export class JournalService {
     this.previewSource.next(previews);
   }
 
-  getCurrentTopic(): string {
-    return this.currentTopicId;
+  getCurrentWorkbook(): string {
+    return this.currentWorkbookId;
   }
 
-  getCurrentTopicName() : string {
-    return this.currenttopicName;
+  getCurrentWorkbookName(): string {
+    return this.currentWorkbookName;
   }
 
-  setCurrentTopic(topicId: string, topicName: string, topicColor: string ) {
-    this.currenttopicName = topicName;
-    this.currentTopicId = topicId;
-    this.currentTopicColor = topicColor;
+  setCurrentWorkbook(topicId: string, topicName: string, topicColor: string ) {
+    this.currentWorkbookName = topicName;
+    this.currentWorkbookId = topicId;
+    this.currentWorkbookColor = topicColor;
     //if switching topics, current journal is unselected
     this.currentJournalTitle = "";
     this.currentJournalSubtitle = "";
-    this.topicSource.next(topicId);
-    this.topicColorSource.next(topicColor);
+    this.workbookSource.next(topicId);
+    this.workbookColorSource.next(topicColor);
   }
 
-  getCurrentTopicColor(): string {
-    return this.currentTopicColor;
+  getCurrentWorkbookColor(): string {
+    return this.currentWorkbookColor;
   }
 
   getFigures(journalId: string, authToken: string): Observable<any> {

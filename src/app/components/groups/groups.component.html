@@ -25,10 +25,10 @@
                                     share the group code with anyone and they can join.</p>
         <label for="groupName" style="font-weight:bold;">New Group Name </label>
         <input id="groupNameInput" name="groupName" type="text" [(ngModel)]="newGroupNameInput"/>
+        <br>
+        <p class="groupErrorMessage" *ngIf="displayTooShortGroupNameError">Group name must be longer than 5 characters</p>
         <br>  
-        <p style="font-size: 18px;"><b>Are you sure you want to create a new group?</b></p>
         <img class="groupLoadingIcon" *ngIf="displayGroupLoadingIcon" src="../../../assets/images/loading.gif"/>
-
     </div>
     <ng-template pTemplate="footer">
         <button class="figureModalBtn" (click)="createNewGroup()">Confirm</button>
